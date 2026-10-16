@@ -21,8 +21,6 @@ The improved AVORA booking flow as a React 19 + TypeScript single-page app (Vite
 | [07 Animations](07-animations.md) | Motion tokens, the iOS spring, the drawer, basket and lightbox; instant page navigation |
 | [08 Theming](08-theming.md) | Light, dark and system themes: tokens, runtime, contrast, what is deliberately not themed |
 
-The audit notes (unexpected states, authentication, reviews, performance) that used to be listed here are not in `docs/` yet. Their findings are summarised in the audit table below.
-
 > **Wedding halls are parked.** The hall toggle, nav/menu links and hall results are hidden by `config.features.halls` in `src/lib/config.ts` (set it to `true` to bring them back). Everything below that mentions halls describes the behaviour that returns when the switch is on; `?type=hall` is ignored while it is off.
 
 ## Pages
@@ -41,27 +39,6 @@ The audit notes (unexpected states, authentication, reviews, performance) that u
 | `/legal/terms`, `/legal/privacy` | Terms of Service / Privacy Policy (text in `src/features/legal/content.ts`; contact avorabookings@gmail.com) |
 
 Full route and parameter rules: 02 §1. Code layout: 04 §A.3. Default dates are always today +3 to +5 nights, so the demo never goes stale.
-
-## Live-site audit: issue → change → screen
-| # | Live-site issue | What AVORA now does | Screen |
-|---|---|---|---|
-| 1 | Every physical room listed separately (Room 101…); duplicates | Rooms grouped by type: "Double Room · 6 available" with a quantity stepper; a "Recommended for you" group above "Other rooms" | Hotel |
-| 2 | "Only 1 room left" on every card (fake urgency) | Scarcity text only when ≤ 2 remain (e.g. Family Suite at Jazeera); otherwise just "N available" | Hotel |
-| 3 | $1 rooms, "Price on request", "0.0 (0)" ratings | Test data removed; a rating is shown only once a property has 3+ reviews (otherwise omitted, no placeholder); every price is real | Home, Search, Hotel |
-| 4 | "Pay $2 now" vs "You won't be charged yet"; "Service fee $0" next to "Taxes included" | One message everywhere: "Pay $204 now · Free cancellation until Oct 13". Fee row hidden when it rounds to $0; the fee is only mentioned at checkout (no tax or fee wording on browse, hotel or sticky-bar screens) | Checkout |
-| 5 | Internal copy ("room list will surface the right CTAs…") | Internal copy removed; the room list has no helper text under it, just the "Recommended for you" / "Other rooms" groups | Hotel |
-| 6 | WhatsApp button covers fields | Floating button removed; WhatsApp is an icon in the header (left of the logo) on every page, so it can never cover a field; contextual "Contact hotel" on confirmation | All |
-| 7 | Results start ~1,200px down under expanded filters | Filters in a bottom sheet behind "Filters (n)", Sort inline, results first; desktop gets the same panel as a sidebar | Search |
-| 8 | No results summary; title echoes raw input | "4 stays in Mogadishu · Oct 14–16 · 2 guests" + inline Edit accordion; "Mog" resolves to Mogadishu in the title; hotels that are full for the dates are left out of the list | Search |
-| 9 | Summary below Pay; first card is only optional notes | Collapsible summary on top (mobile) / sticky sidebar (desktop); order your details → payment → Pay (the notes box was later removed) | Checkout |
-| 10 | Sticky "Book" greyed out, no feedback | "Select a room" button that scrolls to and highlights the rooms; then "1 room · $200 · 2 nights · Reserve" | Hotel |
-| 11 | "Mogadishu 3" but search returns 2 | City counts computed from the same data the search uses | Home, Search |
-| 12 | City combobox shows no suggestions | Working autocomplete (focus, typing, arrow keys, hotels, live counts) | Home, Search edit |
-| 13 | Featured and Newest identical | Newest excludes Featured and sorts by date added | Home |
-| 14 | Thin hotel page, blank photos | Gallery, description, amenities, check-in/out, rules, map placeholder, cancellation policy | Hotel |
-| 15 | "Book" vs "Reserve" | "Reserve" everywhere | Hotel, Checkout |
-| 16 | Menu lacks My bookings / Favourites / Support; wedding halls not browsable | Menu (and desktop nav) includes them; Hotels / Wedding halls toggle with its own data | All, Home |
-| 17 | Phone field has no +252 hint | Fixed +252 prefix, placeholder, inline validation (accepts `61 555 0142`, `0615550142`, `+252…`), "Pay from a different number" | Checkout |
 
 ## Guests and accounts
 Guests can still reserve and pay, but they get a deliberately thinner experience so that signing up is the obvious choice.
@@ -103,6 +80,6 @@ Wedding halls have no rooms field.
 - "Ocean View Inn" is permanently sold out in the mock data, to demonstrate the unavailable state. Test wallet numbers for declined, pending, timed-out and price-changed payments: 06 §9.
 - Payments are simulated by the mock API. Card numbers and CVCs never reach the API layer: `src/lib/payments/hostedFields.ts` turns them into a token (the provider SDK replaces it in production). Saved cards keep only brand, last 4 digits and expiry.
 - The mock account service hashes passwords with WebCrypto, which needs `localhost` or https.
-- Rooms are grouped by type server-side (issue 1): availability returns `{roomTypeId, available, nightlyPrice}` per type.
+- Rooms are grouped by type server-side: availability returns `{roomTypeId, available, nightlyPrice}` per type.
 - Photos are placeholders (fixed aspect ratios) until `images` are supplied by the API.
 - Wedding halls reuse the property page: "rooms" become halls, price is per day, guests = capacity.
