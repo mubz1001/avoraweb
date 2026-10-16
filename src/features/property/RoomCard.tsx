@@ -1,7 +1,7 @@
 import { Chip, Stepper } from '@/components/Controls';
 import { Icon } from '@/components/Icon';
 import { PropertyImage } from '@/components/PropertyImage';
-import { useLightbox } from '@/components/useLightbox';
+import { useLightbox, warmLightbox } from '@/components/useLightbox';
 import { formatMoney, guestsUpTo, plural } from '@/lib/money';
 import type { Property, RoomType } from '@/types';
 import { t } from '@/lib/i18n';
@@ -41,6 +41,7 @@ export function RoomCard({ property: p, room: r, available, nightly, nights, qty
           type="button"
           className="room-photo"
           aria-label={t('Open photo of {name}', { name: r.name })}
+          onPointerDown={warmLightbox}
           onClick={(e) => openPhotos([r.image!], 0, e.currentTarget)}
         >
           {photo}

@@ -1,5 +1,8 @@
 /* Centred card over a dimmed page; fades and rises in (transform/opacity only). The exit is instant, like the
    browser's own dialogs. */
+.cdlg:focus {
+  outline: none;
+}
 .cdlg {
   width: min(400px, calc(100vw - 32px));
   max-width: none;

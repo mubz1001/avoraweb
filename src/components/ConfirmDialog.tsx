@@ -31,7 +31,7 @@ interface Props {
 /**
  * A yes/no question that needs an answer before going on (docs/05 ConfirmDialog). A native modal <dialog>: the browser
  * traps focus, makes the page inert and closes it on Esc. A press on the dimmed backdrop cancels. Focus starts on the
- * safe choice (cancel, or the close X when there is no cancel button), and returns to the control that opened it.
+ * safe choice (cancel, or the dialog itself when there is no cancel button), and returns to the control that opened it.
  */
 export function ConfirmDialog({
   open,
@@ -46,11 +46,12 @@ export function ConfirmDialog({
 }: Props) {
   const ref = useRef<HTMLDialogElement>(null);
   const cancelRef = useRef<HTMLButtonElement>(null);
-  const closeRef = useRef<HTMLButtonElement>(null);
   const titleId = useId();
   useModalDialog(ref, open);
   useEffect(() => {
-    if (open) (cancelRef.current ?? closeRef.current)?.focus(); // after the dialog opened (effects run in order)
+    // After the dialog opened (effects run in order). Without a cancel button the dialog itself takes focus, not the
+    // close X: a script-focused X shows a ring nobody asked for. Tab reaches the X, and Esc closes either way.
+    if (open) (cancelRef.current ?? ref.current)?.focus({ preventScroll: true });
   }, [open]);
 
   return (
@@ -59,6 +60,7 @@ export function ConfirmDialog({
     <dialog
       ref={ref}
       className="cdlg"
+      tabIndex={-1}
       aria-labelledby={titleId}
       onCancel={(e) => {
         e.preventDefault(); // the parent owns `open`
@@ -70,7 +72,7 @@ export function ConfirmDialog({
     >
       <div className="cdlg-in">
         {cancelLabel ? null : (
-          <button ref={closeRef} type="button" className="icon-btn cdlg-x" aria-label={t('Close')} onClick={onCancel}>
+          <button type="button" className="icon-btn cdlg-x" aria-label={t('Close')} onClick={onCancel}>
             <Icon name="close" />
           </button>
         )}

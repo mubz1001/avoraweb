@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { PropertyImage } from '@/components/PropertyImage';
-import { useLightbox } from '@/components/useLightbox';
+import { useLightbox, warmLightbox } from '@/components/useLightbox';
 import { GALLERY_LABELS } from '@/lib/reference';
 import type { Property } from '@/types';
 import { t } from '@/lib/i18n';
@@ -31,6 +31,7 @@ export function Gallery({ property: p }: { property: Property }) {
         type="button"
         className="gal-open"
         aria-label={t('Open photo {i} of {n}', { i: i + 1, n: p.images.length })}
+        onPointerDown={warmLightbox}
         onClick={(e) => openPhotos(p.images, i, e.currentTarget)}
       >
         {img}

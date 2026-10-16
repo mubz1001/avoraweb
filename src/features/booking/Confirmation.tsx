@@ -90,9 +90,10 @@ function StayDetails({ booking: b }: { booking: Booking }) {
   );
 }
 
-/** The booking's cancellation terms and where to ask for changes. */
+/** The booking's cancellation terms and where to ask for changes. A finished stay can't be cancelled, so it has none. */
 function CancellationCard({ booking: b }: { booking: Booking }) {
   const until = b.quote.freeCancellationUntil;
+  if (hasEnded(b)) return null;
   return (
     <div className="card" style={{ marginTop: 12 }}>
       <b className={until ? 'ok' : undefined}>
