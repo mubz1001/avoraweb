@@ -12,13 +12,19 @@ import { Icon } from '@/components/Icon';
 import { useToast } from '@/components/Toast';
 import { isApiError } from '@/lib/api/client';
 import { accountApi, queryKeys } from '@/lib/api/endpoints';
-import { phoneDigits, phoneFmt, toE164 } from '@/lib/phone';
+import { SOMALIA, splitE164, toE164For } from '@/lib/phone';
 import { queryClient } from '@/lib/queryClient';
 import { forgetSession, signOutAndSay } from '@/lib/session';
-import { confirmMsg, emailMsg, nameMsg, normEmail, phoneMsg, pwMsg } from '@/lib/validation/rules';
+import { checkPhone, confirmMsg, emailMsg, nameMsg, normEmail, pwMsg } from '@/lib/validation/rules';
 import type { Member } from '@/types';
 
 const opts = { mode: 'onTouched', reValidateMode: 'onChange', shouldFocusError: false } as const;
+
+/** The member's country and the number as the field shows it. */
+const phoneFields = (m: Member) => {
+  const { country, number } = splitE164(m.phone);
+  return { cc: country, phone: number };
+};
 
 function DetailsForm({ member }: { member: Member }) {
   const toast = useToast();
@@ -28,10 +34,12 @@ function DetailsForm({ member }: { member: Member }) {
       firstName: rule((v) => nameMsg(v, 'first name')),
       lastName: rule((v) => nameMsg(v, 'last name')),
       email: rule(emailMsg),
-      phone: rule(phoneMsg),
+      cc: z.string(),
+      phone: z.string(),
       current: z.string(),
     })
     .superRefine((v, ctx) => {
+      checkPhone(v, ctx);
       if (member.hasPassword && normEmail(v.email) !== member.email && !v.current)
         ctx.addIssue({
           code: 'custom',
@@ -43,7 +51,7 @@ function DetailsForm({ member }: { member: Member }) {
     firstName: member.firstName,
     lastName: member.lastName,
     email: member.email,
-    phone: phoneFmt(member.phone),
+    ...phoneFields(member),
     current: '',
   };
   const form = useForm({ ...opts, resolver: zodResolver(schema), defaultValues: defaults });
@@ -53,7 +61,7 @@ function DetailsForm({ member }: { member: Member }) {
     (v.firstName ?? '').trim() !== member.firstName ||
     (v.lastName ?? '').trim() !== member.lastName ||
     emailChanged ||
-    phoneDigits(v.phone ?? '') !== phoneDigits(member.phone);
+    toE164For(v.cc ?? SOMALIA, v.phone ?? '') !== member.phone;
   const submit = useFormSubmit(form, async (x) => {
     setErr('');
     try {
@@ -61,7 +69,7 @@ function DetailsForm({ member }: { member: Member }) {
         firstName: x.firstName.trim(),
         lastName: x.lastName.trim(),
         email: x.email.trim(),
-        phone: toE164(x.phone),
+        phone: toE164For(x.cc, x.phone),
         ...(member.hasPassword && emailChanged ? { currentPassword: x.current } : {}),
       });
       queryClient.setQueryData(queryKeys.me, m);
@@ -69,7 +77,7 @@ function DetailsForm({ member }: { member: Member }) {
         firstName: m.firstName,
         lastName: m.lastName,
         email: m.email,
-        phone: phoneFmt(m.phone),
+        ...phoneFields(m),
         current: '',
       });
       toast('Your details are saved');
@@ -116,7 +124,7 @@ function DetailsForm({ member }: { member: Member }) {
             hidden={!emailChanged}
           />
         ) : null}
-        <PhoneField control={form.control} name="phone" id="pphone" label="Mobile number" />
+        <PhoneField control={form.control} name="phone" countryName="cc" id="pphone" label="Mobile number" />
         <Button type="submit" disabled={!changed} busy={form.formState.isSubmitting} busyLabel="Saving…">
           Save changes
         </Button>
@@ -235,15 +243,6 @@ export function ProfileTab({ member }: { member: Member }) {
       <DetailsForm key={`${member.email}|${member.phone}|${member.firstName}|${member.lastName}`} member={member} />
       <section className="card">
         <h2>Sign-in &amp; security</h2>
-        {member.hasPassword ? (
-          <div className="kv">
-            <span className="ico">
-              <Icon name="mail" />
-              Email &amp; password
-            </span>
-            <b className="ok">On</b>
-          </div>
-        ) : null}
         {member.providers.map((k) => {
           const { name, Mark } = PROVIDERS[k];
           return (

@@ -11,16 +11,16 @@ import { Icon } from '@/components/Icon';
 import { forgetSession } from '@/lib/session';
 import { isApiError } from '@/lib/api/client';
 import { accountApi } from '@/lib/api/endpoints';
-import { toE164 } from '@/lib/phone';
+import { SOMALIA, toE164For } from '@/lib/phone';
 import { session } from '@/lib/storage';
-import { confirmMsg, emailMsg, nameMsg, phoneMsg, pwMsg } from '@/lib/validation/rules';
+import { checkPhone, confirmMsg, emailMsg, nameMsg, pwMsg } from '@/lib/validation/rules';
 import type { Member } from '@/types';
 import './auth.css';
 
 export type Provider = keyof typeof PROVIDERS;
 
 /** Typed values survive switching between the auth views (never passwords). In memory only. */
-export const draft: { firstName?: string; lastName?: string; email?: string; phone?: string } = {};
+export const draft: { firstName?: string; lastName?: string; email?: string; cc?: string; phone?: string } = {};
 
 /** A Google/Apple sign-up waiting for the details providers never share (opaque server token, 15 min). */
 const PENDING = 'avora.pending';
@@ -118,7 +118,8 @@ export function SignInForm({ onDone, onForgot }: { onDone: (m: Member) => void; 
 const namesShape = {
   firstName: rule((v) => nameMsg(v, 'first name')),
   lastName: rule((v) => nameMsg(v, 'last name')),
-  phone: rule(phoneMsg),
+  cc: z.string(),
+  phone: z.string(),
 };
 const signUpSchema = z
   .object({ ...namesShape, email: rule(emailMsg), password: z.string(), confirm: z.string() })
@@ -127,6 +128,7 @@ const signUpSchema = z
     if (m) ctx.addIssue({ code: 'custom', path: ['password'], message: m });
     const c = confirmMsg(v.password, v.confirm);
     if (c) ctx.addIssue({ code: 'custom', path: ['confirm'], message: c });
+    checkPhone(v, ctx);
   });
 
 function NameFields<T extends FieldValues>({ control }: { control: Control<T> }) {
@@ -158,6 +160,7 @@ export function SignUpForm({ onDone, onSignIn }: { onDone: (m: Member) => void; 
       firstName: draft.firstName ?? '',
       lastName: draft.lastName ?? '',
       email: draft.email ?? '',
+      cc: draft.cc ?? SOMALIA,
       phone: draft.phone ?? '',
       password: '',
       confirm: '',
@@ -174,7 +177,7 @@ export function SignUpForm({ onDone, onSignIn }: { onDone: (m: Member) => void; 
             firstName: v.firstName.trim(),
             lastName: v.lastName.trim(),
             email: v.email.trim(),
-            phone: toE164(v.phone),
+            phone: toE164For(v.cc, v.phone),
             password: v.password,
           })
         ).member,
@@ -198,6 +201,7 @@ export function SignUpForm({ onDone, onSignIn }: { onDone: (m: Member) => void; 
       firstName: form.getValues('firstName'),
       lastName: form.getValues('lastName'),
       email: form.getValues('email'),
+      cc: form.getValues('cc'),
       phone: form.getValues('phone'),
     });
     setErr('');
@@ -214,7 +218,7 @@ export function SignUpForm({ onDone, onSignIn }: { onDone: (m: Member) => void; 
         autoComplete="email"
         spellCheck={false}
       />
-      <PhoneField control={form.control} name="phone" label="Mobile number" />
+      <PhoneField control={form.control} name="phone" countryName="cc" label="Mobile number" />
       <PasswordField control={form.control} name="password" label="Password" autoComplete="new-password" />
       <PasswordField
         control={form.control}
@@ -296,7 +300,7 @@ export function ProviderForm({
   );
 }
 
-const completeSchema = z.object(namesShape);
+const completeSchema = z.object(namesShape).superRefine(checkPhone);
 
 /** "Almost done": what providers never share (the mobile number, and names Apple may withhold). */
 export function CompleteForm({
@@ -314,7 +318,12 @@ export function CompleteForm({
   const form = useForm({
     ...opts,
     resolver: zodResolver(completeSchema),
-    defaultValues: { firstName: draft.firstName ?? '', lastName: draft.lastName ?? '', phone: draft.phone ?? '' },
+    defaultValues: {
+      firstName: draft.firstName ?? '',
+      lastName: draft.lastName ?? '',
+      cc: draft.cc ?? SOMALIA,
+      phone: draft.phone ?? '',
+    },
   });
   const [err, setErr] = useState('');
   const submit = useFormSubmit(form, async (v) => {
@@ -324,7 +333,7 @@ export function CompleteForm({
         pendingToken: pending.token,
         firstName: v.firstName.trim(),
         lastName: v.lastName.trim(),
-        phone: toE164(v.phone),
+        phone: toE164For(v.cc, v.phone),
       });
       clearPending();
       onDone(member);
@@ -348,7 +357,7 @@ export function CompleteForm({
       <form noValidate onSubmit={submit}>
         <FormError>{err}</FormError>
         <NameFields control={form.control} />
-        <PhoneField control={form.control} name="phone" label="Mobile number" />
+        <PhoneField control={form.control} name="phone" countryName="cc" label="Mobile number" />
         <Button type="submit" block busy={form.formState.isSubmitting} busyLabel="Creating your account…">
           Create account
         </Button>
