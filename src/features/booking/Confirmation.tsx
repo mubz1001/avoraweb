@@ -5,6 +5,7 @@ import { WhatsAppIcon } from '@/components/BrandIcons';
 import { Button, ButtonLink, ExternalButton } from '@/components/Button';
 import { Icon } from '@/components/Icon';
 import { JoinPrompt } from '@/components/JoinPrompt';
+import { paymentRows } from './paymentRows';
 import { PropertyImage } from '@/components/PropertyImage';
 import { useToast } from '@/components/Toast';
 import { fmtDay, fmtRange } from '@/lib/dates';
@@ -33,18 +34,13 @@ function Head({ booking: b }: { booking: Booking }) {
   );
 }
 
-const payLabel = (b: Booking) => {
-  const m = b.payment;
-  const name = m.method === 'card' ? `${m.brand ?? t('Card')} •••• ${m.last4 ?? ''}` : (m.brand ?? '');
-  return `${t('Paid with')} ${name}${m.payPhoneMasked ? ' · ' + m.payPhoneMasked : ''}`;
-};
-
 /** What was booked and paid, in full: photo, address, dates, times, party, rooms, fee, payment and the guest's name. The
  *  same for a member and a guest (the guest's copy is also emailed). */
 function StayDetails({ booking: b }: { booking: Booking }) {
   const p = b.property;
   const hall = p.type === 'hall';
   const q = b.quote;
+  const pay = paymentRows(b.payment);
   return (
     <div className="card">
       <PropertyImage type={p.type} hue={p.hue} label={p.propertyType} image={p.image} className="confirm-ph" />
@@ -79,9 +75,19 @@ function StayDetails({ booking: b }: { booking: Booking }) {
         </div>
       ) : null}
       <div className="kv">
-        <span className="muted">{payLabel(b)}</span>
+        <span className="muted">{t('Total paid')}</span>
         <b>{formatMoney(q.total)}</b>
       </div>
+      <div className="kv">
+        <span className="muted">{t('Payment method')}</span>
+        <b>{pay.method}</b>
+      </div>
+      {pay.detail ? (
+        <div className="kv">
+          <span className="muted">{pay.detailLabel}</span>
+          <b>{pay.detail}</b>
+        </div>
+      ) : null}
       <div className="kv">
         <span className="muted">{t('Guest')}</span>
         <b>{b.guest.name}</b>

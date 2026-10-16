@@ -12,6 +12,7 @@ import { formatMoney, plural } from '@/lib/money';
 import { phoneDigits } from '@/lib/phone';
 import { savePrefill } from '@/lib/receipt';
 import type { Booking, Order } from '@/types';
+import { paymentRows } from './paymentRows';
 import './booking.css';
 import { t } from '@/lib/i18n';
 
@@ -202,6 +203,7 @@ export function OrderConfirmation({
     return <UnsettledOrder order={o} onRefresh={onRefresh} />;
   const email = o.bookings[0]?.guest.email;
   const kept = o.bookings.filter((b) => b.status !== 'failed');
+  const pay = paymentRows(o.payment);
   const paid = o.refunded ? o.total.amount - o.refunded.amount : o.total.amount;
   return (
     <div className="wrap">
@@ -234,9 +236,15 @@ export function OrderConfirmation({
             </div>
           ) : null}
           <div className="kv">
-            <span className="muted">{t('Paid with')}</span>
-            <b>{payLabel(o)}</b>
+            <span className="muted">{t('Payment method')}</span>
+            <b>{pay.method}</b>
           </div>
+          {pay.detail ? (
+            <div className="kv">
+              <span className="muted">{pay.detailLabel}</span>
+              <b>{pay.detail}</b>
+            </div>
+          ) : null}
         </div>
         {member ? null : (
           <div style={{ marginTop: 12 }}>
