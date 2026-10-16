@@ -13,7 +13,7 @@ export const FAQ: FaqGroup[] = [
     items: [
       [
         'Do I need an account to book?',
-        'No, you can book as a guest. Guests only get an email with their booking details and nothing is saved on the device, so keep that email. An account keeps every booking, your saved payment methods and your favourites in one place, on any device, and lets you add stays to your calendar, get directions and contact the hotel.',
+        'No, you can book as a guest. Guests only get an email with their booking details. The best way to use our platform is with an account which keeps your bookings, your saved payment methods and your favourites in one place, accessible on any device.',
       ],
       [
         'Where is my confirmation email?',

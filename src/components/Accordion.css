@@ -40,8 +40,10 @@
   text-align: start;
   border-radius: inherit;
 }
-.rowbtn:hover {
-  background: var(--surface-hover);
+@media (hover: hover) {
+  .rowbtn:hover {
+    background: var(--surface-hover);
+  }
 }
 .rowbtn:focus-visible {
   outline: 2px solid var(--focus-ring);
