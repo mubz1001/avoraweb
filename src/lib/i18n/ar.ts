@@ -275,6 +275,7 @@ export const ar: Record<string, string> = {
   'All countries': 'جميع الدول',
   Payment: 'الدفع',
   'Payment method': 'طريقة الدفع',
+  'Total paid': 'الإجمالي المدفوع',
   Saved: 'محفوظة',
   'Add a new method': 'أضف طريقة جديدة',
   Default: 'افتراضية',

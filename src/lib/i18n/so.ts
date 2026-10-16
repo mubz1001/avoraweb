@@ -276,6 +276,7 @@ export const so: Record<string, string> = {
   'All countries': 'Dhammaan dalalka',
   Payment: 'Lacag-bixinta',
   'Payment method': 'Habka lacag-bixinta',
+  'Total paid': 'Wadarta la bixiyay',
   Saved: 'La kaydiyay',
   'Add a new method': 'Ku dar hab cusub',
   Default: 'Caadi',
