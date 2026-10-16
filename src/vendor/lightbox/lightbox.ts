@@ -16,6 +16,8 @@ export interface LightboxItem {
   alt: string;
   /** Smaller image for the thumbnail strip; falls back to `src`. */
   thumb?: string;
+  /** An image the page already has loaded: shown at once while `src` (the large one) downloads. */
+  preview?: string;
 }
 
 const MAX_ZOOM = 4;
@@ -258,7 +260,7 @@ export class Lightbox {
     this.nextBtn.disabled = next === n - 1;
     this.slides.forEach((img, k) => {
       // Load the photo on screen and its neighbours, so the next slide is ready before it arrives.
-      if (Math.abs(k - next) <= 1 && !img.getAttribute('src')) img.src = this.items[k]!.src;
+      if (Math.abs(k - next) <= 1 && !img.getAttribute('src')) this.load(k);
       img.parentElement!.setAttribute('aria-hidden', String(k !== next));
       img.parentElement!.classList.toggle('on', k === next);
     });
@@ -270,6 +272,27 @@ export class Lightbox {
     });
     this.setZoom(1);
     this.resetGesture();
+  }
+
+  /** Starts photo `k`: a preview the page already holds shows straight away, then the large photo replaces it once decoded. */
+  private load(k: number) {
+    const img = this.slides[k]!;
+    const { src, preview } = this.items[k]!;
+    if (!preview || preview === src) {
+      img.src = src;
+      return;
+    }
+    img.src = preview;
+    const full = new Image();
+    full.src = src;
+    void full
+      .decode()
+      .then(() => {
+        if (this.slides[k] === img) img.src = src;
+      })
+      .catch(() => {
+        if (this.slides[k] === img) img.src = src;
+      });
   }
 
   /** Forgets any finger still down, so a stale pointer can't leak into the next photo or the next open. */
