@@ -155,7 +155,7 @@ interface Member {
   id: string;
   firstName: string; lastName: string;
   email: string;                                           // lowercase, unique
-  phone: string;                                           // E.164
+  phone: string;                                           // E.164, any country (+252…, +44…)
   phoneVerified: boolean;
   hasPassword: boolean;                                    // false for Google/Apple-only accounts
   providers: ('google' | 'apple')[];
