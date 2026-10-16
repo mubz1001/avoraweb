@@ -5,7 +5,8 @@ The improved AVORA booking flow as a React 19 + TypeScript single-page app (Vite
 ## Run it
 - **Windows:** double-click `start.cmd` in the project folder (installs on first run, builds the optimised site, then opens http://localhost:5173).
 - **Any OS:** `npm install` once, then `npm start` (production build + preview). For development with hot reload: `npm run dev`.
-- Checks: `npm run typecheck`, `npm run lint`, `npm test` (unit, component and mock-API tests), `npm run e2e` (Playwright at 375px and 1440px). Production build: `npm run build`, then `npm run preview`.
+- Checks: `npm run typecheck`, `npm run lint`, `npm test` (unit, component and mock-API tests), `npm run e2e` (Playwright at 375px and 1440px), `npm run i18n:check` (translation keys missing from the `so` or `ar` files). Production build: `npm run build`, then `npm run preview`.
+- Known gap: `vite.config.ts` points at `tests/setup.ts` and the Playwright config at `tests/e2e`, but neither folder is in this checkout, so `npm test` and `npm run e2e` need them restored first.
 - Real API instead of the mock: `VITE_API_MOCK=false` (and `VITE_API_BASE` if it isn't `/api/v1`). See 04 §B.1.
 
 ## Documentation
@@ -17,12 +18,10 @@ The improved AVORA booking flow as a React 19 + TypeScript single-page app (Vite
 | [04 Frontend architecture](04-frontend-architecture.md) | How the app is built; moving to production |
 | [05 Components](05-component-documentation.md) | Each component, where it lives, its props and states |
 | [06 API contract](06-api-integration-contract.md) | Endpoints, types, errors; the mock server and its test triggers (§9) |
-| [07 Animations](07-animations.md) | Motion tokens, the iOS spring, the drawer and basket; instant page navigation |
+| [07 Animations](07-animations.md) | Motion tokens, the iOS spring, the drawer, basket and lightbox; instant page navigation |
 | [08 Theming](08-theming.md) | Light, dark and system themes: tokens, runtime, contrast, what is deliberately not themed |
-| [08 Unexpected-states audit](08-unexpected-states-audit.md) | What happens when payments, requests, sessions and data go wrong: what was fixed, what was left and why |
-| [09 Authentication audit](09-authentication-audit.md) | The sign-in, sign-up, provider, reset, session and sign-out edge cases: what was fixed, what was left and why |
-| [10 Reviews audit](10-reviews-audit.md) | Review eligibility, the form, submission outcomes and the review pages: what was fixed, what was left and why |
-| [11 Performance audit](11-performance-audit.md) | Bundle, photo and request measurements before and after; what was changed, what was left and why |
+
+The audit notes (unexpected states, authentication, reviews, performance) that used to be listed here are not in `docs/` yet. Their findings are summarised in the audit table below.
 
 > **Wedding halls are parked.** The hall toggle, nav/menu links and hall results are hidden by `config.features.halls` in `src/lib/config.ts` (set it to `true` to bring them back). Everything below that mentions halls describes the behaviour that returns when the switch is on; `?type=hall` is ignored while it is off.
 
@@ -43,7 +42,7 @@ The improved AVORA booking flow as a React 19 + TypeScript single-page app (Vite
 
 Full route and parameter rules: 02 §1. Code layout: 04 §A.3. Default dates are always today +3 to +5 nights, so the demo never goes stale.
 
-## Audit issue → change → screen
+## Live-site audit: issue → change → screen
 | # | Live-site issue | What AVORA now does | Screen |
 |---|---|---|---|
 | 1 | Every physical room listed separately (Room 101…); duplicates | Rooms grouped by type: "Double Room · 6 available" with a quantity stepper; a "Recommended for you" group above "Other rooms" | Hotel |
