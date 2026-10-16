@@ -14,14 +14,9 @@
   color: #fff;
   overflow: hidden;
   overscroll-behavior: contain;
-  /* Same motion as the basket card: a soft scale-in from the top right with a 10px drop and a fade, played back on
-     close. Only opacity and transform move. */
+  /* A plain fade in and out (no movement, so it is easy on anyone sensitive to motion). Only opacity changes. */
   opacity: 0;
-  transform: translateY(-10px) scale(0.97);
-  transform-origin: top right;
-  transition:
-    opacity var(--dur-base) var(--ease-standard),
-    transform var(--dur-base) var(--ease-standard);
+  transition: opacity var(--dur-base) var(--ease-standard);
 }
 .lb:focus {
   outline: none;
@@ -30,17 +25,11 @@
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto;
   opacity: 1;
-  transform: none;
-  transition:
-    opacity var(--dur-base) var(--ease-out),
-    transform var(--dur-base) var(--ease-out);
+  transition: opacity var(--dur-base) var(--ease-out);
 }
 .lb[open].closing {
   opacity: 0;
-  transform: translateY(-10px) scale(0.97);
-  transition:
-    opacity var(--dur-base) var(--ease-standard),
-    transform var(--dur-base) var(--ease-standard);
+  transition: opacity var(--dur-base) var(--ease-standard);
 }
 @supports (backdrop-filter: blur(1px)) {
   .lb {
@@ -52,7 +41,12 @@
 @starting-style {
   .lb[open] {
     opacity: 0;
-    transform: translateY(-10px) scale(0.97);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lb,
+  .lb-slide {
+    transition-duration: 1ms;
   }
 }
 .lb-bar {
@@ -104,7 +98,7 @@
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-/* Phones zoom with a double tap; the buttons are for a mouse. */
+/* Phones zoom by pinching or a double tap; the buttons are for a mouse. */
 @media (max-width: 767px) {
   .lb-zoom {
     display: none;
@@ -115,28 +109,32 @@
   min-height: 0;
   overflow: hidden;
   overscroll-behavior: contain;
-  touch-action: pan-y;
-}
-.lb-stage.zoomed {
+  /* The page behind is held still and swipes are handled in script, so the browser never claims a pinch or a drag. */
   touch-action: none;
 }
+/* Photos sit on top of each other and cross-fade: nothing travels across the screen. */
 .lb-track {
-  display: flex;
+  display: grid;
   height: 100%;
-  transition: transform var(--dur-slow) var(--ease-out);
-  will-change: transform;
-}
-.lb-track.dragging,
-.lb-track.instant {
-  transition: none;
 }
 .lb-slide {
-  flex: 0 0 100%;
+  grid-area: 1 / 1;
   min-width: 0;
+  min-height: 0;
   box-sizing: border-box;
   display: grid;
   place-items: center;
   padding: 0 max(12px, env(safe-area-inset-left));
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-base) var(--ease-standard);
+}
+.lb-slide.on {
+  opacity: 1;
+  pointer-events: auto;
+}
+.lb-track.instant .lb-slide {
+  transition: none;
 }
 .lb-img {
   max-width: 100%;
@@ -144,6 +142,8 @@
   object-fit: contain;
   border-radius: 6px;
   user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
   will-change: transform;
 }
 .lb-stage.zoomed .lb-img {

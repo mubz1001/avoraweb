@@ -41,15 +41,15 @@ describe('Lightbox', () => {
     expect(dialog().querySelector('.lb-count')?.textContent).toBe('2 / 3');
   });
 
-  it('slides the track with the arrow keys and stops at the ends', () => {
-    const track = () => dialog().querySelector('.lb-track') as HTMLElement;
+  it('fades between photos with the arrow keys and stops at the ends', () => {
+    const shown = () => [...dialog().querySelectorAll('.lb-slide')].map((s) => s.classList.contains('on'));
     box.open(photos, 0, opener);
-    expect(track().style.transform).toContain('calc(0%');
+    expect(shown()).toEqual([true, false, false]);
     key('ArrowRight');
-    expect(track().style.transform).toContain('-100%');
+    expect(shown()).toEqual([false, true, false]);
     key('ArrowRight');
     key('ArrowRight');
-    expect(track().style.transform).toContain('-200%');
+    expect(shown()).toEqual([false, false, true]);
     expect((dialog().querySelector('.lb-next') as HTMLButtonElement).disabled).toBe(true);
     key('ArrowLeft');
     expect(img().getAttribute('src')).toBe('/p2.jpg');
@@ -100,5 +100,95 @@ describe('Lightbox', () => {
     expect(zoomIn.disabled).toBe(true);
     reset.click();
     expect(img().style.transform).toContain('scale(1)');
+  });
+
+  describe('touch gestures', () => {
+    // jsdom has no layout: give the photo and the stage a size so pan limits and zoom anchors have something to use.
+    const size = (el: Element, w: number, h: number, props: [string, string]) => {
+      Object.defineProperty(el, props[0], { configurable: true, value: w });
+      Object.defineProperty(el, props[1], { configurable: true, value: h });
+    };
+    const pointer = (type: string, id: number, x: number, y: number, to: Element = img()) => {
+      const e = new MouseEvent(type, { bubbles: true, clientX: x, clientY: y });
+      Object.defineProperty(e, 'pointerId', { value: id });
+      Object.defineProperty(e, 'pointerType', { value: 'touch' });
+      to.dispatchEvent(e);
+    };
+    const scale = () => Number(/scale\(([\d.]+)\)/.exec(img().style.transform)?.[1]);
+    const shift = () => /translate\((-?[\d.]+)px, (-?[\d.]+)px\)/.exec(img().style.transform)!.slice(1).map(Number);
+
+    beforeEach(() => {
+      box.open(photos, 0, opener);
+      size(img(), 400, 300, ['offsetWidth', 'offsetHeight']);
+      size(dialog().querySelector('.lb-stage')!, 400, 600, ['clientWidth', 'clientHeight']);
+    });
+
+    it('zooms as two fingers spread, up to a limit', () => {
+      pointer('pointerdown', 1, 190, 300);
+      pointer('pointerdown', 2, 210, 300);
+      pointer('pointermove', 2, 250, 300); // 20px apart -> 60px apart
+      expect(scale()).toBeCloseTo(3);
+      pointer('pointermove', 2, 600, 300);
+      expect(scale()).toBe(4);
+      expect(dialog().querySelector('.lb-stage')?.classList.contains('zoomed')).toBe(true);
+    });
+
+    it('settles back to the whole photo when a pinch ends almost closed', () => {
+      pointer('pointerdown', 1, 150, 300);
+      pointer('pointerdown', 2, 250, 300);
+      pointer('pointermove', 2, 350, 300);
+      pointer('pointermove', 2, 251, 300); // back to 1.01x
+      pointer('pointerup', 2, 251, 300);
+      pointer('pointerup', 1, 150, 300);
+      expect(scale()).toBe(1);
+      expect(shift()).toEqual([0, 0]);
+    });
+
+    it('changes photo on a swipe, but not when a second finger takes over', () => {
+      pointer('pointerdown', 1, 200, 300);
+      pointer('pointermove', 1, 120, 300);
+      pointer('pointerup', 1, 120, 300);
+      expect(dialog().querySelector('.lb-count')?.textContent).toBe('2 / 3');
+      pointer('pointerdown', 3, 200, 300);
+      pointer('pointermove', 3, 120, 300);
+      pointer('pointerdown', 4, 300, 300);
+      pointer('pointerup', 4, 300, 300);
+      pointer('pointerup', 3, 120, 300);
+      expect(dialog().querySelector('.lb-count')?.textContent).toBe('2 / 3');
+    });
+
+    it('carries on as a pan with the finger left after a pinch, and keeps the photo on screen', () => {
+      pointer('pointerdown', 1, 150, 300);
+      pointer('pointerdown', 2, 250, 300);
+      pointer('pointermove', 2, 350, 300); // 100px -> 200px apart: 2x
+      pointer('pointerup', 2, 350, 300);
+      const [x0] = shift();
+      pointer('pointermove', 1, 160, 300);
+      expect(shift()[0]).toBeCloseTo(x0! + 10);
+      pointer('pointermove', 1, 5000, 300);
+      expect(shift()[0]).toBe(200); // (400 * 2 - 400) / 2
+    });
+
+    it('zooms in on a double tap and out on the next', () => {
+      for (const t of [1, 2]) {
+        pointer('pointerdown', t, 200, 300);
+        pointer('pointerup', t, 200, 300);
+      }
+      expect(scale()).toBe(2.5);
+      for (const t of [3, 4]) {
+        pointer('pointerdown', t, 200, 300);
+        pointer('pointerup', t, 200, 300);
+      }
+      expect(scale()).toBe(1);
+    });
+
+    it('starts the next photo at the whole photo', () => {
+      pointer('pointerdown', 1, 150, 300);
+      pointer('pointerdown', 2, 250, 300);
+      pointer('pointermove', 2, 350, 300);
+      key('ArrowRight');
+      expect(scale()).toBe(1);
+      expect(dialog().querySelector('.lb-stage')?.classList.contains('zoomed')).toBe(false);
+    });
   });
 });

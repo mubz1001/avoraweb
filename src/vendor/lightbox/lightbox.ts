@@ -5,8 +5,8 @@
  * Local changes: images only (video, audio, iframe, custom HTML, rotate and download removed); a native <dialog> in
  * place of a plain div (focus trap, Esc, top layer, focus returns to the opener); labelled buttons; no inline style
  * attributes (our CSP is `style-src 'self'`); an <img> with alt text instead of a background image; previous / next
- * buttons, arrow keys and a counter; photos on a sliding track (a drag follows the finger, release snaps); thumbnails
- * as buttons; the page's scroll lock is restored, not reset.
+ * buttons, arrow keys and a counter; photos that cross-fade (no sliding, so nothing travels across the screen; a swipe changes photo on release); thumbnails
+ * as buttons; the page's scroll lock is restored, not reset; pinch and double-tap zoom with pan limits.
  */
 import { afterTransition } from '@/lib/motion/presence';
 import './lightbox.css';
@@ -19,7 +19,23 @@ export interface LightboxItem {
 }
 
 const MAX_ZOOM = 4;
+const SNAP_ZOOM = 1.02; // a pinch that ends below this settles back to 1
+const DOUBLE_TAP_ZOOM = 2.5;
+const DOUBLE_TAP_MS = 300;
+const DOUBLE_TAP_PX = 24;
 const SWIPE_PX = 50;
+
+interface Pinch {
+  dist: number;
+  zoom: number;
+  mx: number;
+  my: number;
+  x: number;
+  y: number;
+  /** The photo's centre at rest (no pan), in viewport pixels. */
+  cx: number;
+  cy: number;
+}
 
 const ICONS = {
   close: 'M6 6l12 12M18 6L6 18',
@@ -71,6 +87,11 @@ export class Lightbox {
   private y = 0;
   private pan: { px: number; py: number; ox: number; oy: number } | null = null;
   private swipe: { from: number; dx: number } | null = null;
+  private pointers = new Map<number, { x: number; y: number }>();
+  private pinch: Pinch | null = null;
+  private lastTap: { t: number; x: number; y: number } | null = null;
+  private touch = false;
+  private downOnImg = false;
   private dragged = false;
   private closing = false;
   private cancelExit: (() => void) | null = null;
@@ -119,8 +140,13 @@ export class Lightbox {
     // A press on the backdrop or the empty part of a slide closes it (not the end of a drag).
     d.addEventListener('click', (e) => {
       const t = e.target as HTMLElement;
-      if (this.dragged) return;
+      if (this.dragged || this.downOnImg) return; // pointer capture retargets a press on the photo to the stage
       if (t === d || t === this.stage || t.classList.contains('lb-slide')) this.close();
+    });
+    // A mouse double click zooms; touch has its own double tap (see `tap`).
+    this.stage.addEventListener('dblclick', (e) => {
+      if (this.touch || !this.downOnImg) return;
+      this.zoomAt(this.zoom > 1 ? 1 : 2, e.clientX, e.clientY);
     });
     this.stage.addEventListener(
       'wheel',
@@ -132,8 +158,8 @@ export class Lightbox {
     );
     this.stage.addEventListener('pointerdown', (e) => this.down(e));
     this.stage.addEventListener('pointermove', (e) => this.move(e));
-    this.stage.addEventListener('pointerup', () => this.release(true));
-    this.stage.addEventListener('pointercancel', () => this.release(false));
+    this.stage.addEventListener('pointerup', (e) => this.release(e, true));
+    this.stage.addEventListener('pointercancel', (e) => this.release(e, false));
   }
 
   get isOpen() {
@@ -172,7 +198,6 @@ export class Lightbox {
       img.className = 'lb-img';
       img.alt = it.alt;
       img.draggable = false;
-      img.addEventListener('dblclick', () => this.setZoom(this.zoom > 1 ? 1 : 2));
       return img;
     });
     this.track.replaceChildren(
@@ -214,19 +239,19 @@ export class Lightbox {
     this.dialog.close();
     this.track.replaceChildren();
     this.slides = [];
+    this.resetGesture();
     const o = this.opener;
     this.opener = null;
     if (o && document.contains(o)) o.focus({ preventScroll: true });
   }
 
-  /** Slides to photo `i` (the track moves on the compositor; `animate` is off for the first paint). */
+  /** Fades to photo `i` (opacity only; `animate` is off for the first paint). */
   private show(i: number, animate = true) {
     const n = this.items.length;
     const next = Math.min(Math.max(i, 0), n - 1);
     if (this.slides[this.index] && next !== this.index) this.active.style.transform = '';
     this.index = next;
     this.track.classList.toggle('instant', !animate);
-    this.place(0);
     if (!animate) void this.track.offsetWidth; // commit the jump before transitions come back
     this.count.textContent = `${next + 1} / ${n}`;
     this.prevBtn.disabled = next === 0;
@@ -235,6 +260,7 @@ export class Lightbox {
       // Load the photo on screen and its neighbours, so the next slide is ready before it arrives.
       if (Math.abs(k - next) <= 1 && !img.getAttribute('src')) img.src = this.items[k]!.src;
       img.parentElement!.setAttribute('aria-hidden', String(k !== next));
+      img.parentElement!.classList.toggle('on', k === next);
     });
     this.strip.querySelectorAll('.lb-thumb').forEach((b, k) => {
       if (k === next) {
@@ -243,24 +269,50 @@ export class Lightbox {
       } else b.removeAttribute('aria-current');
     });
     this.setZoom(1);
+    this.resetGesture();
   }
 
-  /** Positions the track on the current photo, `offset` px further along while a finger drags it. */
-  private place(offset: number) {
-    this.track.style.transform = `translate3d(calc(${-this.index * 100}% + ${offset}px), 0, 0)`;
+  /** Forgets any finger still down, so a stale pointer can't leak into the next photo or the next open. */
+  private resetGesture() {
+    this.pointers.clear();
+    this.pinch = this.pan = this.swipe = this.lastTap = null;
   }
 
   private go(step: number) {
     if (this.items.length > 1) this.show(this.index + step);
   }
 
+  /** Zooms about the middle of the photo (buttons, wheel); the pan is kept, within limits. */
   private setZoom(z: number) {
+    this.apply(z, this.x, this.y);
+  }
+
+  /** Sets zoom and pan together: zoom is clamped, the pan is kept inside the photo's edges, then it is painted. */
+  private apply(z: number, x: number, y: number) {
     this.zoom = Math.min(MAX_ZOOM, Math.max(1, z));
-    if (this.zoom === 1) this.x = this.y = 0;
+    const img = this.slides[this.index];
+    // A photo that fits the stage has nothing to pan to; offsetWidth ignores transforms, so this is the rest size.
+    const lx = img ? Math.max(0, (img.offsetWidth * this.zoom - this.stage.clientWidth) / 2) : 0;
+    const ly = img ? Math.max(0, (img.offsetHeight * this.zoom - this.stage.clientHeight) / 2) : 0;
+    this.x = this.zoom === 1 ? 0 : Math.min(lx, Math.max(-lx, x));
+    this.y = this.zoom === 1 ? 0 : Math.min(ly, Math.max(-ly, y));
     this.stage.classList.toggle('zoomed', this.zoom > 1);
     this.zoomBtn.disabled = this.zoom >= MAX_ZOOM;
     this.resetBtn.disabled = this.zoom === 1;
-    if (this.slides[this.index]) this.paint();
+    if (img) this.paint();
+  }
+
+  /** The photo's centre with no pan applied (scaling is about the centre, so only the pan moves it). */
+  private restCentre() {
+    const r = this.active.getBoundingClientRect();
+    return { cx: r.left + r.width / 2 - this.x, cy: r.top + r.height / 2 - this.y };
+  }
+
+  /** Zooms to `z` keeping the photo point under (px, py) where it is (double tap, double click). */
+  private zoomAt(z: number, px: number, py: number) {
+    const { cx, cy } = this.restCentre();
+    const k = Math.min(MAX_ZOOM, Math.max(1, z)) / this.zoom;
+    this.apply(this.zoom * k, px - cx - (px - cx - this.x) * k, py - cy - (py - cy - this.y) * k);
   }
 
   private paint() {
@@ -268,41 +320,83 @@ export class Lightbox {
   }
 
   private down(e: PointerEvent) {
-    this.dragged = false;
+    if (this.pointers.size >= 2) return; // a third finger does nothing
+    if (!this.pointers.size) {
+      this.dragged = false;
+      this.touch = e.pointerType === 'touch';
+      this.downOnImg = (e.target as HTMLElement).classList?.contains('lb-img') ?? false;
+    }
     this.stage.setPointerCapture?.(e.pointerId);
-    if (this.zoom > 1) this.pan = { px: e.clientX, py: e.clientY, ox: this.x, oy: this.y };
+    this.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (this.pointers.size === 2) this.startPinch();
+    else if (this.zoom > 1) this.pan = { px: e.clientX, py: e.clientY, ox: this.x, oy: this.y };
     else if (this.items.length > 1) this.swipe = { from: e.clientX, dx: 0 };
   }
 
+  /** The two fingers' distance and midpoint. */
+  private fingers() {
+    const [a, b] = [...this.pointers.values()] as [{ x: number; y: number }, { x: number; y: number }];
+    return { dist: Math.max(1, Math.hypot(b.x - a.x, b.y - a.y)), mx: (a.x + b.x) / 2, my: (a.y + b.y) / 2 };
+  }
+
+  /** The second finger landed: a swipe or pan in progress gives way to a pinch. */
+  private startPinch() {
+    this.swipe = this.pan = null;
+    this.dragged = true; // lifting the fingers must not count as a backdrop press
+    this.lastTap = null;
+    this.pinch = { ...this.fingers(), zoom: this.zoom, x: this.x, y: this.y, ...this.restCentre() };
+  }
+
   private move(e: PointerEvent) {
-    if (this.pan) {
-      this.x = this.pan.ox + e.clientX - this.pan.px;
-      this.y = this.pan.oy + e.clientY - this.pan.py;
-      if (Math.abs(this.x - this.pan.ox) + Math.abs(this.y - this.pan.oy) > 4) this.dragged = true;
-      this.paint();
+    const p = this.pointers.get(e.pointerId);
+    if (!p) return;
+    p.x = e.clientX;
+    p.y = e.clientY;
+    if (this.pinch) {
+      // The photo point that was under the fingers' midpoint stays under it as they spread, close and travel.
+      const s = this.pinch;
+      const now = this.fingers();
+      const z = Math.min(MAX_ZOOM, Math.max(1, (s.zoom * now.dist) / s.dist));
+      const k = z / s.zoom;
+      this.apply(z, now.mx - s.cx - (s.mx - s.cx - s.x) * k, now.my - s.cy - (s.my - s.cy - s.y) * k);
+    } else if (this.pan) {
+      const nx = this.pan.ox + e.clientX - this.pan.px;
+      const ny = this.pan.oy + e.clientY - this.pan.py;
+      if (Math.abs(nx - this.pan.ox) + Math.abs(ny - this.pan.oy) > 4) this.dragged = true;
+      this.apply(this.zoom, nx, ny);
     } else if (this.swipe) {
-      let dx = e.clientX - this.swipe.from;
-      // Resist at the ends, where the track has nothing further to show.
-      if ((this.index === 0 && dx > 0) || (this.index === this.items.length - 1 && dx < 0)) dx /= 3;
-      this.swipe.dx = dx;
-      if (Math.abs(dx) > 4) {
-        this.dragged = true;
-        this.track.classList.add('dragging');
-        this.place(dx);
-      }
+      // Nothing follows the finger: a swipe only picks the next or previous photo when it lifts.
+      this.swipe.dx = e.clientX - this.swipe.from;
+      if (Math.abs(this.swipe.dx) > 4) this.dragged = true;
     }
   }
 
-  private release(commit: boolean) {
-    const swipe = this.swipe;
-    this.pan = null;
-    this.swipe = null;
-    this.track.classList.remove('dragging');
-    if (swipe && this.dragged) {
-      if (commit && Math.abs(swipe.dx) > SWIPE_PX) this.go(swipe.dx < 0 ? 1 : -1);
-      else this.place(0); // not far enough: slide back
+  private release(e: PointerEvent, commit: boolean) {
+    if (!this.pointers.delete(e.pointerId)) return;
+    if (this.pinch) {
+      this.pinch = null;
+      if (this.zoom < SNAP_ZOOM) this.apply(1, 0, 0);
+      // The finger left on the glass carries on as a pan, from where the photo is now.
+      const rest = [...this.pointers.values()][0];
+      if (rest && this.zoom > 1) this.pan = { px: rest.x, py: rest.y, ox: this.x, oy: this.y };
+    } else {
+      const swipe = this.swipe;
+      const tapped = commit && !this.dragged && this.touch && this.downOnImg;
+      this.pan = null;
+      this.swipe = null;
+      if (swipe && commit && Math.abs(swipe.dx) > SWIPE_PX) this.go(swipe.dx < 0 ? 1 : -1);
+      if (tapped) this.tap(e);
     }
     // The click that ends a drag must not count as a backdrop press.
-    if (this.dragged) setTimeout(() => (this.dragged = false), 0);
+    if (this.dragged && !this.pointers.size) setTimeout(() => (this.dragged = false), 0);
+  }
+
+  /** Two quick taps on the photo zoom in on that spot, or back out. */
+  private tap(e: PointerEvent) {
+    const last = this.lastTap;
+    if (last && e.timeStamp - last.t < DOUBLE_TAP_MS && Math.hypot(e.clientX - last.x, e.clientY - last.y) < DOUBLE_TAP_PX) {
+      this.lastTap = null;
+      this.zoomAt(this.zoom > 1 ? 1 : DOUBLE_TAP_ZOOM, e.clientX, e.clientY);
+    } else this.lastTap = { t: e.timeStamp, x: e.clientX, y: e.clientY };
   }
 }
