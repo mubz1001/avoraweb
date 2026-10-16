@@ -1,0 +1,289 @@
+/* Your next trip: image on top on mobile, square thumbnail at the side from 768px like the result cards */
+.nexttrip {
+  display: grid;
+  gap: 14px;
+  padding: 14px;
+}
+.nexttrip .ph {
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+}
+.nt-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+}
+.nt-body h3 {
+  font-size: 19px;
+}
+.nt-body h3 a {
+  text-decoration: none;
+}
+.nt-body h3 a:hover {
+  text-decoration: underline;
+}
+.nt-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  font-size: 13.5px;
+  color: var(--ink2);
+}
+.nt-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+  margin-top: 6px;
+}
+.nt-actions .btn {
+  flex: 1 1 calc(50% - 4px);
+  white-space: nowrap;
+}
+.nt-actions .btn.pri {
+  flex-basis: 100%;
+}
+.nt-actions .btn svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+@media (min-width: 768px) {
+  .nexttrip {
+    grid-template-columns: 200px 1fr;
+    gap: 20px;
+    padding: 16px;
+    align-items: start;
+  }
+  .nexttrip .ph {
+    aspect-ratio: 1 / 1;
+  }
+  .nt-actions {
+    width: auto;
+  }
+  .nt-actions .btn,
+  .nt-actions .btn.pri {
+    flex: none;
+  }
+  .nt-actions .btn.pri {
+    order: -1;
+  }
+}
+
+/* booking cards (My bookings): photo, then what / when / who / what's next */
+.bkcard {
+  position: relative;
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 12px;
+  padding: 12px;
+  margin-bottom: 10px;
+  text-decoration: none;
+  align-items: start;
+}
+@media (min-width: 420px) {
+  .bkcard {
+    grid-template-columns: 128px minmax(0, 1fr);
+    gap: 16px;
+    padding: 14px;
+  }
+}
+.bkcard:hover {
+  box-shadow:
+    0 0 0 1px var(--line),
+    var(--shadow);
+}
+.bkcard:has(.bkcard-link:focus-visible) {
+  box-shadow: 0 0 0 2px var(--ink);
+}
+.bkcard-link {
+  color: inherit;
+  text-decoration: none;
+}
+.bkcard-link:focus-visible {
+  outline: none;
+}
+.bkcard-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--r);
+}
+.bkcard-rv {
+  position: relative; /* above the card-wide link */
+  z-index: 1;
+  margin-top: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.bkcard-rv .btn {
+  flex: 1 1 140px;
+}
+.bkcard-rv .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.bkcard-ph {
+  aspect-ratio: 1;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  object-fit: cover;
+}
+.bkcard.past .bkcard-ph {
+  filter: grayscale(0.35);
+}
+.bkcard-body {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+.bkcard-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+}
+.bkcard-top b {
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+.bkcard-top .chip {
+  font-size: 12px;
+  padding: 2px 8px;
+}
+.stay-place {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.stay-place svg,
+.stay-facts svg {
+  flex: none;
+}
+.stay-place svg {
+  color: var(--ink);
+}
+.stay-facts {
+  display: grid;
+  gap: 8px;
+  margin: 10px 0 0;
+  padding: 10px 0 0;
+  border-top: 1px solid var(--line);
+  list-style: none;
+  font-size: 13.5px;
+  font-weight: 400;
+  color: var(--ink2);
+}
+.stay-facts li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.stay-facts svg {
+  margin-top: 1px;
+}
+.bkcard-foot {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+}
+.bkcard-ref {
+  font-size: 13.5px;
+  font-weight: 400;
+  color: var(--ink2);
+}
+.bkcard-total {
+  font-size: 18px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+/* confirmation */
+.confirm {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px 0 0;
+}
+.confirm-ph {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  height: auto;
+  margin-bottom: 14px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+.confirm-end {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 16px;
+}
+.confirm-end:has(> :only-child) {
+  grid-template-columns: 1fr;
+}
+.confirm-head {
+  text-align: center;
+}
+.confirm-top {
+  margin-bottom: 12px;
+}
+.confirm-top .actions {
+  margin: 14px 0 0;
+}
+.ref {
+  font:
+    700 26px/1 ui-monospace,
+    Consolas,
+    monospace;
+  letter-spacing: 0.12em;
+  margin: 6px 0;
+}
+.actions {
+  display: grid;
+  gap: 10px;
+  margin: 18px 0;
+}
+@media (min-width: 560px) {
+  .actions {
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  }
+}
+
+/* order confirmation: one card per booking */
+.ordlist {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+.ordbk .ordbk-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.ordbk .ordbk-top h2 {
+  margin: 0;
+}
+.ordbk .ref.sm {
+  font-size: 16px;
+  margin: 0;
+}
+.ordbk .ordbk-acts {
+  margin-top: 10px;
+  align-items: center;
+  gap: 14px;
+}

@@ -1,0 +1,62 @@
+.stars {
+  min-width: 0;
+  margin: 0 0 14px;
+  padding: 0;
+  border: 0;
+}
+.stars > .lbl {
+  padding: 0;
+  margin-bottom: 6px;
+  font-weight: 600;
+  font-size: 13.5px;
+}
+.stars-row {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.stars-row label {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-left: -4px;
+  color: var(--line);
+  cursor: pointer;
+  transition:
+    color var(--dur-fast) var(--ease-standard),
+    transform var(--dur-fast) var(--ease-out);
+}
+.stars-row label:first-child {
+  margin-left: -6px;
+}
+.stars-row label.on {
+  color: var(--ink);
+}
+.stars-row label:active {
+  transform: scale(0.88);
+}
+.stars-row label:has(input:focus-visible) {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
+  border-radius: 10px;
+}
+.stars-word {
+  margin-left: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink2);
+}
+.stars .msg {
+  display: none;
+  margin-top: 2px;
+  color: var(--err);
+  font-size: 12.5px;
+}
+.stars.bad .msg {
+  display: block;
+}
+.stars.bad .stars-row label:not(.on) {
+  color: var(--star-empty-bad);
+}

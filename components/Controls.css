@@ -1,0 +1,121 @@
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 99px;
+  background: var(--surface-2);
+  font-size: 12.5px;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+.chip.ok {
+  background: var(--okbg);
+  color: var(--ok);
+}
+.chip.warn {
+  background: var(--warnbg);
+  color: var(--warn);
+}
+
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--input-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.stepper button {
+  width: 44px;
+  height: 44px;
+  border: 0;
+  background: var(--card);
+  font-size: 20px;
+  cursor: pointer;
+}
+.stepper button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+.stepper output {
+  min-width: 34px;
+  text-align: center;
+  font-weight: 700;
+}
+
+.rate {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 700;
+  font-size: 13.5px;
+}
+.rate svg {
+  width: 14px;
+  height: 14px;
+  color: #e9a800;
+}
+.rate .rate-n {
+  font-weight: 500;
+}
+
+.sc {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--ink);
+  color: var(--on-ink);
+  font-weight: 700;
+  font-size: 13px;
+  padding: 4px 10px;
+  border-radius: 99px;
+  flex: none;
+}
+.sc svg {
+  width: 13px;
+  height: 13px;
+  color: var(--on-ink);
+}
+
+.heart {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 3;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 0;
+  background: rgba(255, 255, 255, 0.92);
+  color: #111; /* sits on a photo: fixed in both themes */
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  flex: none;
+}
+.heart.inline {
+  position: static;
+  background: var(--card);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+}
+.heart svg {
+  width: 20px;
+  height: 20px;
+}
+.heart.on svg {
+  fill: #d6246e;
+  color: #d6246e;
+}
+
+.av {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  flex: none;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  color: #fff;
+  background: hsl(var(--h) 38% 40%);
+}
