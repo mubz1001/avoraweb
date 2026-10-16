@@ -1,5 +1,5 @@
 import { today } from '@/lib/dates';
-import { phoneOk } from '@/lib/phone';
+import { phoneMsgFor, phoneOk } from '@/lib/phone';
 
 /** Each rule returns '' when valid, else the message shown under the field (copy: docs/01). */
 export const normEmail = (v: string) =>
@@ -10,6 +10,15 @@ export const emailOk = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v
 
 export const phoneMsg = (v: string) =>
   phoneOk(v) ? '' : 'Enter a 9-digit Somali mobile number starting with 6 or 7, e.g. 61 555 0142.';
+
+/** For a form with a country (`cc`, ISO code) and a number (`phone`): flags the number under its own field. */
+export function checkPhone(
+  v: { cc: string; phone: string },
+  ctx: { addIssue: (i: { code: 'custom'; path: string[]; message: string }) => void },
+) {
+  const message = phoneMsgFor(v.cc, v.phone);
+  if (message) ctx.addIssue({ code: 'custom', path: ['phone'], message });
+}
 
 export const emailMsg = (v: string) =>
   !v.trim() ? 'Enter your email address.' : emailOk(v) ? '' : "That email doesn't look right.";

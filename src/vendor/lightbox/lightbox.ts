@@ -394,7 +394,11 @@ export class Lightbox {
   /** Two quick taps on the photo zoom in on that spot, or back out. */
   private tap(e: PointerEvent) {
     const last = this.lastTap;
-    if (last && e.timeStamp - last.t < DOUBLE_TAP_MS && Math.hypot(e.clientX - last.x, e.clientY - last.y) < DOUBLE_TAP_PX) {
+    if (
+      last &&
+      e.timeStamp - last.t < DOUBLE_TAP_MS &&
+      Math.hypot(e.clientX - last.x, e.clientY - last.y) < DOUBLE_TAP_PX
+    ) {
       this.lastTap = null;
       this.zoomAt(this.zoom > 1 ? 1 : DOUBLE_TAP_ZOOM, e.clientX, e.clientY);
     } else this.lastTap = { t: e.timeStamp, x: e.clientX, y: e.clientY };
