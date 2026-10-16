@@ -1,0 +1,153 @@
+/* Design tokens (docs/03). Colours, radii, layout width and motion timings; the iOS spring lives in motion.css. */
+:root {
+  /* motion: see docs/07-animations.md */
+  --dur-fast: 150ms;
+  --dur-base: 250ms;
+  --dur-slow: 320ms;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+
+  color-scheme: light;
+
+  /* Theme colours: light values here, dark overrides below under [data-theme='dark'] (docs/08-theming.md). Components
+     use these tokens only; never a literal colour for anything that should follow the theme. */
+  --bg: #f4f4f2;
+  --card: #fff;
+  --surface-2: #f4f4f2;
+  --surface-hover: #f4f4f2;
+  --surface-hover-strong: #ececea;
+  --ink: #111;
+  --ink2: #333;
+  --muted: #6b6b66;
+  --line: #e4e4e1;
+  --input-border: #cfcfca;
+  --link: #1d4ed8;
+  --on-ink: #fff;
+  --pin: #ff4d00;
+
+  --ok: #0a7a4a;
+  --okbg: #e6f4ec;
+  --success-border: #bfe3cf;
+  --warn: #9a3412;
+  --warnbg: #fff1e6;
+  --warning-border: #f6cfb0;
+  --err: #c0262d;
+  --errbg: #fdecec;
+  --error-border: #f1c0c2;
+
+  /* Header, hero and footer stay black in both themes */
+  --header-bg: #000;
+  --header-text: #fff;
+  --header-muted: #ddd;
+  --header-line: #3a3a3a;
+  --header-hover: #1c1c1c;
+
+  --button-primary-bg: #111;
+  --button-primary-text: #fff;
+  --button-primary-hover: #2a2a2a;
+  --button-secondary-bg: #fff;
+  --button-secondary-text: #111;
+  --button-secondary-border: var(--line);
+  --button-danger-bg: #c0262d;
+  --button-danger-hover: #a51f26;
+  --wa: #128c4a;
+
+  --card-outline: var(--ink);
+  --focus-ring: #111;
+  --field-ring: rgba(0, 0, 0, 0.1);
+  --skeleton: #e6e6e2;
+  --seg-thumb: #fff;
+  --map-bg: #e8ece6;
+  --star-empty-bad: #e9b4b6;
+  --backdrop: rgba(0, 0, 0, 0.5);
+  --select-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23111' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+
+  --calendar-bg: #fff;
+  --calendar-day-text: #111;
+  --calendar-disabled-text: #c4c4bf;
+  --calendar-range-bg: #ececea;
+  --calendar-selected-bg: #111;
+  --calendar-selected-text: #fff;
+
+  /* Descriptive aliases */
+  --text-primary: var(--ink);
+  --text-secondary: var(--ink2);
+  --text-muted: var(--muted);
+  --border-default: var(--line);
+  --border-strong: var(--input-border);
+  --surface-primary: var(--card);
+  --surface-secondary: var(--surface-2);
+  --surface-elevated: var(--card);
+
+  --r: 14px;
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.06), 0 4px 14px rgba(0, 0, 0, 0.05);
+  --shadow: var(--shadow-card);
+  --shadow-overlay: 0 12px 30px rgba(0, 0, 0, 0.18);
+  --shadow-pop: 0 12px 40px rgba(0, 0, 0, 0.22);
+  --shadow-search: 0 8px 30px rgba(0, 0, 0, 0.18);
+  --shadow-sticky: 0 -4px 16px rgba(0, 0, 0, 0.08);
+  --wrap: 1120px;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  /* The one dark base: the page background and the text drawn on light fills */
+  --dark-base: #111111;
+
+  --bg: var(--dark-base);
+  --card: #1a1d20;
+  --surface-2: #22262a;
+  --surface-hover: #292e33;
+  --surface-hover-strong: #292e33;
+  --ink: #f5f5f3;
+  --ink2: #d0d3d5;
+  --muted: #a0a5aa;
+  --line: #30353a;
+  --input-border: #454b52;
+  --link: #8ab4ff;
+  --on-ink: var(--dark-base);
+
+  --ok: #54d49a;
+  --okbg: #153b2b;
+  --success-border: #1f5a41;
+  --warn: #ffb477;
+  --warnbg: #42291c;
+  --warning-border: #6b4529;
+  --err: #ff777c;
+  --errbg: #421f23;
+  --error-border: #6e3238;
+
+  --header-muted: #c7c7c7;
+
+  --button-primary-bg: #f5f5f3;
+  --button-primary-text: var(--dark-base);
+  --button-primary-hover: #e1e3e3;
+  --button-secondary-bg: #1a1d20;
+  --button-secondary-text: #f5f5f3;
+  --button-secondary-border: var(--input-border);
+
+  --card-outline: #454b52;
+  --focus-ring: #f5f5f3;
+  --field-ring: rgba(245, 245, 243, 0.18);
+  --skeleton: #292e33;
+  --seg-thumb: #3a4046;
+  --map-bg: #22262a;
+  --star-empty-bad: #7a4a4e;
+  --backdrop: rgba(0, 0, 0, 0.65);
+  --select-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f3' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+
+  --calendar-bg: #1a1d20;
+  --calendar-day-text: #f5f5f3;
+  --calendar-disabled-text: #6a7077;
+  --calendar-range-bg: #2f353b;
+  --calendar-selected-bg: #f5f5f3;
+  --calendar-selected-text: var(--dark-base);
+
+  --shadow-card: 0 0 0 1px var(--line), 0 2px 8px rgba(0, 0, 0, 0.16);
+  --shadow-overlay: 0 0 0 1px var(--input-border), 0 20px 48px rgba(0, 0, 0, 0.85), 0 4px 14px rgba(0, 0, 0, 0.6);
+  --shadow-pop: 0 0 0 1px var(--input-border), 0 20px 56px rgba(0, 0, 0, 0.85), 0 4px 14px rgba(0, 0, 0, 0.6);
+  --shadow-search: 0 8px 30px rgba(0, 0, 0, 0.35);
+  --shadow-sticky: 0 -1px 0 var(--line), 0 -4px 16px rgba(0, 0, 0, 0.3);
+}

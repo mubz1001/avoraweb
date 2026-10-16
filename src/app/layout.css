@@ -1,0 +1,39 @@
+.skip {
+  position: absolute;
+  left: 8px;
+  top: -60px;
+  z-index: 300;
+  background: var(--card);
+  color: var(--ink);
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-weight: 650;
+}
+.skip:focus {
+  top: 8px;
+}
+main:focus {
+  outline: none;
+}
+
+/* Thin progress bar while a navigation waits on data. Transform-only, so it never triggers layout. */
+.navbar-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 60;
+  background: var(--pin);
+  transform: scaleX(0);
+  transform-origin: left;
+  opacity: 0;
+  pointer-events: none;
+}
+.navbar-progress.on {
+  opacity: 1;
+  transform: scaleX(0.8);
+  transition:
+    transform 2s var(--ease-out) 150ms,
+    opacity 0s linear 150ms;
+}

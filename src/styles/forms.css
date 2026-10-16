@@ -1,0 +1,192 @@
+/* Form primitives used site-wide: fields, inputs, phone and password controls, selects, option rows, the error panel. */
+.field {
+  display: block;
+  margin-bottom: 14px;
+}
+.field > .lbl {
+  display: block;
+  font-weight: 600;
+  font-size: 13.5px;
+  margin-bottom: 6px;
+}
+.inp {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  min-height: 46px;
+  padding: 0 14px;
+  border: 1px solid var(--input-border);
+  border-radius: 12px;
+  background: var(--card);
+  outline: none;
+}
+.inp:focus,
+.phone:focus-within {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px var(--field-ring);
+}
+.field.bad .inp,
+.field.bad .phone {
+  border-color: var(--err);
+}
+.field.good .inp,
+.field.good .phone {
+  border-color: var(--ok);
+}
+.field .msg {
+  display: none;
+  color: var(--err);
+  font-size: 12.5px;
+  margin-top: 5px;
+}
+.field.bad .msg {
+  display: block;
+}
+.field .hint {
+  color: var(--muted);
+  font-size: 12.5px;
+  margin-top: 5px;
+}
+.field .hint.bad {
+  color: var(--err);
+}
+
+textarea.inp {
+  display: block;
+  min-height: 140px;
+  padding: 12px 14px;
+  line-height: 1.45;
+  resize: vertical;
+}
+.field .hint:has(.count) {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.field .count {
+  margin-inline-start: auto;
+  font-variant-numeric: tabular-nums;
+}
+.field .count.over {
+  color: var(--err);
+}
+
+.phone {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--input-border);
+  border-radius: 12px;
+  background: var(--card);
+  overflow: hidden;
+}
+.phone .cc {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  background: var(--surface-2);
+  border-inline-end: 1px solid var(--input-border);
+  font-weight: 600;
+  white-space: nowrap;
+}
+/* Country picker: the native select covers the "+code ▾" label, invisible, so phones get their own picker. */
+.phone .cc.pick-cc {
+  position: relative;
+  cursor: pointer;
+}
+.phone .cc.pick-cc select {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.phone .cc.pick-cc:has(select:focus-visible) {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
+}
+.phone input {
+  border: 0;
+  outline: 0;
+  flex: 1;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0 12px;
+  background: transparent;
+}
+
+/* password field with show/hide */
+.pw {
+  position: relative;
+}
+.pw .inp {
+  padding-inline-end: 50px;
+}
+.pw .icon-btn {
+  position: absolute;
+  inset-inline-end: 1px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+}
+.pw .icon-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.grid2 {
+  display: grid;
+  gap: 0 12px;
+}
+@media (min-width: 560px) {
+  .grid2 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* checkbox / radio rows */
+.opt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 38px;
+  cursor: pointer;
+}
+.opt input {
+  width: 19px;
+  height: 19px;
+  accent-color: var(--ink);
+}
+
+select {
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--card) var(--select-chevron) no-repeat right 14px center/16px;
+  padding-right: 42px !important;
+}
+/* Arabic: the chevron and its room move to the left */
+[dir='rtl'] select {
+  background-position: left 14px center;
+  padding-right: 14px !important;
+  padding-left: 42px !important;
+}
+
+/* form-level error panel (role=alert) */
+.formerr {
+  background: var(--errbg);
+  color: var(--err);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 13.5px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+/* iOS Safari zooms into any focused field under 16px: phones get 16px field text. */
+@media (max-width: 767px) {
+  .inp,
+  .phone input,
+  .toolbar select {
+    font-size: 16px;
+  }
+}

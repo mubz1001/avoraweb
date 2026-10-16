@@ -1,0 +1,264 @@
+/* Basket: header button + dropdown (docs/05 BasketPanel, docs/07 §3). */
+
+/* Button: 44px tap target on phones (in place of the account icon); a round outlined chip like the account pill on
+   desktop. The count badge bumps (transform only) whenever it changes. */
+.bskt-btn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: var(--header-text);
+  cursor: pointer;
+}
+.bskt-btn svg {
+  width: 24px;
+  height: 24px;
+}
+.bskt-btn[aria-expanded='true'] {
+  background: var(--header-hover);
+}
+.bskt-btn:focus-visible {
+  outline: 2px solid var(--header-text);
+  outline-offset: -2px;
+}
+.bskt-n {
+  position: absolute;
+  top: 5px;
+  right: 3px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 99px;
+  background: var(--pin);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 18px;
+  text-align: center;
+  box-shadow: 0 0 0 2px var(--header-bg);
+  animation: bskt-bump var(--dur-slow) var(--ease-out);
+}
+@keyframes bskt-bump {
+  0% {
+    transform: scale(0.6);
+  }
+  60% {
+    transform: scale(1.18);
+  }
+  100% {
+    transform: none;
+  }
+}
+@media (min-width: 768px) {
+  .bskt-btn {
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--header-line);
+    border-radius: 99px;
+  }
+  .bskt-btn:hover {
+    background: var(--header-hover);
+  }
+  .bskt-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+  .bskt-n {
+    top: -5px;
+    right: -6px;
+  }
+}
+
+.bskt-body {
+  padding: 14px 16px 16px;
+}
+
+/* One card per hotel: a tinted header (the hotel, its dates and party), white rows for its rooms, and its subtotal. The
+   total and Checkout follow the last card, outside them. */
+.bskt-group:not(.flat) {
+  margin-bottom: 12px;
+  border: 1px solid var(--button-secondary-border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--card);
+}
+.bskt-group:not(.flat) > :not(.bskt-stay) {
+  margin-left: 14px;
+  margin-right: 14px;
+}
+.bskt-group:not(.flat) > .bskt-note {
+  margin-top: 12px;
+}
+.bskt-group:not(.flat) > .btn {
+  width: calc(100% - 28px);
+  margin-bottom: 14px;
+}
+.bskt-stay-sub {
+  margin-top: 0;
+  padding: 12px 0 14px;
+  border-top: 1px solid var(--line);
+}
+.bskt-stay-sub b {
+  font-size: 15px;
+}
+/* One hotel in the basket: the plain layout, with no card (its subtotal is in the totals below). */
+.bskt-group.flat .bskt-stay-sub {
+  display: none;
+}
+/* The stay, once, at the top. It has no picture and no price, so it can't be mistaken for a room. */
+.bskt-stay {
+  display: grid;
+  gap: 3px;
+  padding-bottom: 14px;
+}
+.bskt-group:not(.flat) .bskt-stay {
+  padding: 14px;
+  border-bottom: 1px solid var(--line);
+}
+.bskt-stay-name {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 17px;
+  font-weight: 750;
+  color: inherit;
+  text-decoration: none;
+}
+.bskt-stay-name svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--muted);
+  transform: rotate(-90deg);
+}
+[dir='rtl'] .bskt-stay-name svg {
+  transform: rotate(90deg);
+}
+.bskt-fact {
+  gap: 8px;
+  font-size: 14px;
+  color: var(--ink2);
+}
+.bskt-fact:first-of-type {
+  margin-top: 4px;
+}
+.bskt-fact svg {
+  width: 16px;
+  height: 16px;
+  color: var(--muted);
+}
+
+/* Rooms: every row has the same shape: 16:9 picture · name, capacity, beds · stay total, per night, quantity. */
+.bskt-line {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: start;
+}
+.bskt-line-main {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.bskt-thumb {
+  width: 88px;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  border-radius: 8px;
+}
+img.bskt-thumb {
+  object-fit: cover;
+}
+.bskt-thumb svg {
+  width: 36%;
+}
+
+.bskt-lines {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+.bskt-group:not(.flat) .bskt-lines {
+  border-top: 0;
+}
+.bskt-group:not(.flat) .bskt-lines li:last-child .bskt-line {
+  border-bottom: 0;
+}
+.bskt-line {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+.bskt-line .chip {
+  justify-self: start;
+  margin-top: 4px;
+}
+.bskt-line.bad .bskt-thumb {
+  filter: grayscale(1);
+  opacity: 0.6;
+}
+.bskt-line-side {
+  display: grid;
+  justify-items: end;
+  gap: 2px;
+}
+.bskt-line-side .stepper {
+  margin-top: 6px;
+}
+.stepper.sm button {
+  width: 34px;
+  height: 34px;
+  font-size: 18px;
+}
+.stepper.sm output {
+  min-width: 26px;
+}
+
+.bskt-sum {
+  margin: 10px 0 12px;
+}
+.bskt-sum dd {
+  margin: 0;
+  font-weight: 650;
+}
+.bskt-total {
+  font-size: 16px;
+}
+.bskt-total dt {
+  font-weight: 750;
+}
+
+.bskt-note {
+  margin: 12px 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--warnbg);
+  color: var(--warn);
+  font-size: 14px;
+}
+.bskt-empty {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  padding: 26px 16px 22px;
+  text-align: center;
+}
+.bskt-empty-ico {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 4px;
+  border-radius: 50%;
+  background: var(--surface-2);
+}
+.bskt-empty p {
+  max-width: 280px;
+  margin-bottom: 8px;
+}

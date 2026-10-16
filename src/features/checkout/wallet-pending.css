@@ -1,0 +1,342 @@
+/* Wallet approval wait (docs/05 WalletPending). The one blue screen in an otherwise black-and-white site, so its tokens
+   are scoped to .wp. Only transform and opacity animate. */
+.wp {
+  --wp-top: #1573ea;
+  --wp-mid: #0d5fd8;
+  --wp-deep: #0a4cb8;
+  --wp-ink: #fff;
+  --wp-soft: rgba(255, 255, 255, 0.9);
+  --wp-glass: rgba(255, 255, 255, 0.14);
+  --wp-glass-line: rgba(255, 255, 255, 0.28);
+  width: 100%;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  color: var(--wp-ink);
+  /* Soft ambient light as extra background layers (static; nothing absolutely positioned to inflate the scroll area). */
+  background:
+    radial-gradient(circle at 100% 0%, rgba(120, 190, 255, 0.5), transparent 55%),
+    radial-gradient(circle at 0% 100%, rgba(255, 255, 255, 0.14), transparent 50%),
+    linear-gradient(170deg, var(--wp-top) 0%, var(--wp-mid) 55%, var(--wp-deep) 100%);
+  animation: wp-in 420ms var(--ease-out) both;
+}
+.wp::backdrop {
+  background: rgba(8, 24, 60, 0.6);
+  animation: wp-fade 300ms var(--ease-standard) both;
+}
+.wp-in {
+  position: relative;
+  z-index: 1;
+  min-height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: calc(52px + env(safe-area-inset-top)) 22px calc(18px + env(safe-area-inset-bottom));
+  text-align: center;
+}
+@media (min-width: 768px) {
+  .wp {
+    width: 420px;
+    height: auto;
+    max-height: calc(100dvh - 48px);
+    margin: auto;
+    border-radius: 32px;
+    box-shadow: 0 30px 80px rgba(5, 20, 60, 0.45);
+  }
+  .wp-in {
+    padding: 56px 30px 30px;
+  }
+}
+
+.wp-close {
+  position: absolute;
+  top: calc(12px + env(safe-area-inset-top));
+  left: 14px;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: var(--wp-glass);
+  color: var(--wp-ink);
+  cursor: pointer;
+  transition:
+    background var(--dur-fast) var(--ease-standard),
+    transform var(--dur-fast) var(--ease-standard);
+}
+.wp-close svg {
+  width: 22px;
+  height: 22px;
+}
+.wp-close:hover {
+  background: rgba(255, 255, 255, 0.26);
+}
+.wp-close:active {
+  transform: scale(0.94);
+}
+.wp-close:disabled {
+  opacity: 0.4;
+}
+.wp :focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+/* ---- illustration ---- */
+.wp-art {
+  position: relative;
+  width: 300px;
+  height: 176px;
+  flex: none;
+}
+.wp-ring {
+  position: absolute;
+  left: 50%;
+  top: 70px;
+  width: 112px;
+  height: 112px;
+  margin: -56px 0 0 -56px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  animation: wp-ring 3.6s var(--ease-out) infinite;
+}
+.wp-ring:nth-child(2) {
+  animation-delay: 1.2s;
+}
+.wp-ring:nth-child(3) {
+  animation-delay: 2.4s;
+}
+.wp-float {
+  position: absolute;
+  left: 50%;
+  top: 14px;
+  width: 112px;
+  margin-left: -56px;
+  animation:
+    wp-rise 600ms var(--ease-out) both,
+    wp-float 4s 600ms ease-in-out infinite;
+}
+.wp-phone {
+  display: grid;
+  place-items: center;
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--wp-mid);
+  box-shadow: 0 14px 30px rgba(5, 20, 60, 0.35);
+}
+.wp-phone svg {
+  width: 52px;
+  height: 52px;
+}
+.wp-brand {
+  position: absolute;
+  left: 50%;
+  bottom: -12px;
+  transform: translateX(-50%);
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--wp-deep);
+  border: 1px solid var(--wp-glass-line);
+  font: 700 12px/1 inherit;
+  white-space: nowrap;
+}
+
+/* ---- text ---- */
+.wp-title {
+  margin: 2px 0 0;
+  font-size: 25px;
+  line-height: 1.15;
+  animation: wp-rise 500ms 200ms var(--ease-out) both;
+}
+.wp-title:focus {
+  outline: none;
+}
+.wp-sub {
+  margin: 0;
+  max-width: 320px;
+  color: var(--wp-soft);
+  font-size: 15px;
+  line-height: 1.45;
+  animation: wp-rise 500ms 260ms var(--ease-out) both;
+}
+.wp-facts {
+  width: 100%;
+  max-width: 340px;
+  margin: 0;
+  padding: 2px 16px;
+  box-sizing: border-box;
+  border-radius: 18px;
+  background: var(--wp-glass);
+  border: 1px solid var(--wp-glass-line);
+  text-align: start;
+  animation: wp-rise 500ms 320ms var(--ease-out) both;
+}
+.wp-facts div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 0;
+  font-size: 14px;
+}
+.wp-facts div + div {
+  border-top: 1px solid var(--wp-glass-line);
+}
+.wp-facts dt {
+  color: var(--wp-soft);
+}
+.wp-facts dd {
+  margin: 0;
+  font-weight: 700;
+}
+.wp-status {
+  min-height: 52px;
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+}
+.wp-status p {
+  margin: 0;
+  max-width: 320px;
+  color: var(--wp-soft);
+  font-size: 13.5px;
+  line-height: 1.4;
+}
+.wp-count {
+  font:
+    700 20px/1 ui-monospace,
+    Consolas,
+    monospace;
+}
+.wp-actions {
+  width: 100%;
+  max-width: 340px;
+  display: grid;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 6px;
+}
+.wp-btn {
+  min-height: 50px;
+  border: 2px solid #fff;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--wp-deep);
+  font: 700 15px/1 inherit;
+  cursor: pointer;
+  transition:
+    transform var(--dur-fast) var(--ease-standard),
+    background var(--dur-fast) var(--ease-standard);
+}
+.wp-btn:hover:not(:disabled) {
+  background: #eaf3ff;
+}
+.wp-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+.wp-btn:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+.wp-btn.ghost {
+  background: transparent;
+  color: #fff;
+}
+.wp-btn.ghost:hover {
+  background: var(--wp-glass);
+}
+
+/* ---- success: the phone gives way to a drawn check ---- */
+.wp-ok {
+  position: absolute;
+  left: 50%;
+  top: 14px;
+  width: 112px;
+  height: 112px;
+  margin-left: -56px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--wp-mid);
+  opacity: 0;
+  transform: scale(0.6);
+}
+.wp-ok svg {
+  stroke: currentColor;
+}
+.wp-ok path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.is-done .wp-float,
+.is-done .wp-ring {
+  animation: none;
+  opacity: 0;
+  transition: opacity 200ms var(--ease-standard);
+}
+.is-done .wp-ok {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 250ms var(--ease-out) 150ms,
+    transform 450ms var(--ease-out) 150ms;
+}
+.is-done .wp-ok path {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 500ms var(--ease-out) 450ms;
+}
+
+@keyframes wp-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+@keyframes wp-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes wp-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+@keyframes wp-float {
+  50% {
+    transform: translateY(-6px);
+  }
+}
+@keyframes wp-ring {
+  0% {
+    opacity: 0.6;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2.3);
+  }
+}
+/* The global rule already shortens every animation; here the endless decoration goes and the status stays. */
+@media (prefers-reduced-motion: reduce) {
+  .wp-ring {
+    display: none;
+  }
+  .wp-ok,
+  .wp-ok path {
+    transition: none;
+  }
+}

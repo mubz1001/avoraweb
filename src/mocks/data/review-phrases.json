@@ -1,0 +1,137 @@
+{
+  "RV_NAMES": [
+    "Amina",
+    "Hodan",
+    "Abdi",
+    "Farah",
+    "Mohamed",
+    "Ayaan",
+    "Hamza",
+    "Ismail",
+    "Sagal",
+    "Yusuf",
+    "Khadra",
+    "Omar",
+    "Fadumo",
+    "Ahmed",
+    "Layla",
+    "Mustafa",
+    "Sahra",
+    "Bilal",
+    "Ifrah",
+    "Jamal",
+    "Nasra",
+    "Hassan",
+    "Zahra",
+    "Liban",
+    "Sarah",
+    "James",
+    "Elena",
+    "Daniel",
+    "Priya",
+    "Tom"
+  ],
+  "RV": {
+    "hotel": {
+      "topics": [
+        ["breakfast", "Breakfast"],
+        ["location", "Location"],
+        ["staff", "Staff"],
+        ["wifi", "Wi-Fi"],
+        ["power", "Backup power"],
+        ["clean", "Cleanliness"],
+        ["value", "Value"]
+      ],
+      "liked": {
+        "breakfast": [
+          "Breakfast was fresh and plentiful, with local and continental options.",
+          "Great breakfast, especially the fresh bread and spiced tea.",
+          "Good breakfast included and served until late morning."
+        ],
+        "location": [
+          "Perfect location, close to everything we needed.",
+          "Easy to reach from the airport and the main roads.",
+          "Walking distance to restaurants and the market.",
+          "Quiet street but still central."
+        ],
+        "staff": [
+          "The staff were incredibly welcoming and helped with everything.",
+          "Reception was polite, quick and spoke several languages.",
+          "Friendly team who went out of their way to help us."
+        ],
+        "wifi": [
+          "Wi-Fi was fast and reliable, great for working.",
+          "Strong internet in the room with no drops at all."
+        ],
+        "power": [
+          "Backup power meant we never lost electricity or AC.",
+          "The generator switches on instantly, so no interruptions."
+        ],
+        "clean": [
+          "The room was spotless and the bed very comfortable.",
+          "Everything was clean and well maintained.",
+          "Fresh linen and a very clean bathroom."
+        ],
+        "value": ["Excellent value for the price.", "Fair price for the quality you get."]
+      },
+      "disliked": {
+        "breakfast": ["Breakfast could have more variety.", "Breakfast started a little late for an early flight."],
+        "location": ["The street can be noisy in the evening.", "A bit far to walk to the beach."],
+        "staff": ["Check-in took longer than expected.", "Reception was slow to answer the phone once."],
+        "wifi": ["Wi-Fi was slow in the evening.", "Wi-Fi did not reach the far end of the corridor."],
+        "power": ["The AC was a little loud at night.", "Hot water took a while to arrive."],
+        "clean": ["The bathroom needed a bit more attention.", "Towels were not replaced on the second day."],
+        "value": ["A bit pricey for what you get.", "Extras like laundry are expensive."]
+      },
+      "titles": {
+        "1": ["Needs improvement", "Would not return"],
+        "2": ["Disappointing", "Not as expected"],
+        "3": ["Decent, a few issues", "Okay for the price", "Average stay"],
+        "4": ["Very good stay", "Great value", "Comfortable and clean", "Good location"],
+        "5": ["Exceptional stay", "Wonderful hotel", "Highly recommend", "Perfect for our trip", "Would stay again"]
+      }
+    },
+    "hall": {
+      "topics": [
+        ["venue", "Venue & space"],
+        ["stage", "Stage & sound"],
+        ["catering", "Catering"],
+        ["parking", "Parking"],
+        ["staff", "Staff"],
+        ["decor", "Decoration"]
+      ],
+      "liked": {
+        "venue": [
+          "The hall was spacious and stayed cool even with 400 guests.",
+          "Beautiful venue with plenty of room for the dance floor."
+        ],
+        "stage": ["The stage and sound system worked perfectly.", "Great lighting and clear sound all evening."],
+        "catering": ["The food was excellent and served on time.", "Catering team handled all our guests smoothly."],
+        "parking": ["Plenty of parking for all our guests.", "Secure parking made arrivals easy."],
+        "staff": [
+          "The organisers and staff handled everything calmly.",
+          "Very professional team from setup to cleanup."
+        ],
+        "decor": ["The decoration team did a beautiful job.", "The hall looked even better than the photos."]
+      },
+      "disliked": {
+        "venue": [
+          "It got warm at the back during the busiest part.",
+          "Entrance gets crowded when everyone arrives together."
+        ],
+        "stage": ["The sound was a bit too loud at the back.", "Microphone needed replacing once."],
+        "catering": ["We ran out of drinks early.", "Dessert was served a little late."],
+        "parking": ["Parking got crowded.", "Staff had to direct cars for a long time."],
+        "staff": ["Start was delayed by about 30 minutes.", "We needed to ask twice about the schedule."],
+        "decor": ["Some decoration items were not as agreed.", "Flowers were fewer than in the sample photos."]
+      },
+      "titles": {
+        "1": ["Would not book again"],
+        "2": ["Disappointing"],
+        "3": ["Good, but some delays", "Okay for the price"],
+        "4": ["Very good venue", "Great for big families", "Lovely hall"],
+        "5": ["A perfect wedding venue", "Beautiful hall, great team", "Highly recommend", "Everything went smoothly"]
+      }
+    }
+  }
+}

@@ -1,0 +1,208 @@
+/* Photo lightbox (adapted from duccanhole/lightbox-js, MIT). Full-screen native dialog on the black of the header. */
+.lb {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  /* The page stays visible behind, softly blurred, rather than a hard black wall. */
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  overflow: hidden;
+  overscroll-behavior: contain;
+  /* Same motion as the basket card: a soft scale-in from the top right with a 10px drop and a fade, played back on
+     close. Only opacity and transform move. */
+  opacity: 0;
+  transform: translateY(-10px) scale(0.97);
+  transform-origin: top right;
+  transition:
+    opacity var(--dur-base) var(--ease-standard),
+    transform var(--dur-base) var(--ease-standard);
+}
+.lb:focus {
+  outline: none;
+}
+.lb[open] {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out);
+}
+.lb[open].closing {
+  opacity: 0;
+  transform: translateY(-10px) scale(0.97);
+  transition:
+    opacity var(--dur-base) var(--ease-standard),
+    transform var(--dur-base) var(--ease-standard);
+}
+@supports (backdrop-filter: blur(1px)) {
+  .lb {
+    background: rgba(24, 24, 24, 0.4);
+    -webkit-backdrop-filter: blur(22px) saturate(1.15);
+    backdrop-filter: blur(22px) saturate(1.15);
+  }
+}
+@starting-style {
+  .lb[open] {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.97);
+  }
+}
+.lb-bar {
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  padding: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right)) 8px
+    max(16px, env(safe-area-inset-left));
+}
+.lb-count {
+  font-size: 14px;
+  font-weight: 650;
+  text-align: center;
+}
+.lb-btn {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: #fff;
+  cursor: pointer;
+}
+.lb-btn[hidden] {
+  display: none;
+}
+.lb-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.14);
+}
+.lb-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.lb-btn:focus-visible,
+.lb-thumb:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+.lb-btn svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+/* Phones zoom with a double tap; the buttons are for a mouse. */
+@media (max-width: 767px) {
+  .lb-zoom {
+    display: none;
+  }
+}
+.lb-stage {
+  grid-row: 2;
+  min-height: 0;
+  overflow: hidden;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+}
+.lb-stage.zoomed {
+  touch-action: none;
+}
+.lb-track {
+  display: flex;
+  height: 100%;
+  transition: transform var(--dur-slow) var(--ease-out);
+  will-change: transform;
+}
+.lb-track.dragging,
+.lb-track.instant {
+  transition: none;
+}
+.lb-slide {
+  flex: 0 0 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  padding: 0 max(12px, env(safe-area-inset-left));
+}
+.lb-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 6px;
+  user-select: none;
+  will-change: transform;
+}
+.lb-stage.zoomed .lb-img {
+  cursor: grab;
+}
+.lb-prev,
+.lb-next {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  background: rgba(0, 0, 0, 0.55);
+}
+.lb-prev {
+  left: max(20px, env(safe-area-inset-left));
+}
+.lb-next {
+  right: max(20px, env(safe-area-inset-right));
+}
+.lb-foot {
+  grid-row: 3;
+  display: grid;
+  gap: 8px;
+  padding: 10px max(12px, env(safe-area-inset-left)) max(12px, env(safe-area-inset-bottom));
+}
+.lb-foot[hidden] {
+  display: none;
+}
+.lb-strip {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+/* Centred while the thumbnails fit; scrolls from the start once they don't. */
+.lb-strip > :first-child {
+  margin-left: auto;
+}
+.lb-strip > :last-child {
+  margin-right: auto;
+}
+.lb-thumb {
+  flex: none;
+  width: 72px;
+  height: 54px;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #222;
+  opacity: 0.65;
+  cursor: pointer;
+}
+.lb-thumb[aria-current='true'] {
+  border-color: #fff;
+  opacity: 1;
+}
+.lb-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}

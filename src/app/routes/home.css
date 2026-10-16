@@ -1,0 +1,69 @@
+.hero {
+  background: var(--header-bg);
+  color: var(--header-text);
+  padding: 26px 0 70px;
+}
+.hero h1 {
+  font-size: 28px;
+  max-width: 560px;
+}
+.hero p {
+  color: var(--header-muted);
+  margin: 8px 0 0;
+  max-width: 520px;
+}
+/* home search card: 2px black outline */
+.sbox {
+  background: var(--card);
+  color: var(--ink);
+  border-radius: 18px;
+  padding: 14px;
+  margin-top: -52px;
+  box-shadow:
+    0 0 0 2px var(--card-outline),
+    var(--shadow-search);
+  position: relative;
+}
+.seg {
+  display: inline-flex;
+  background: var(--surface-2);
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 12px;
+}
+.seg button {
+  border: 0;
+  background: none;
+  padding: 8px 16px;
+  border-radius: 9px;
+  font-weight: 650;
+  cursor: pointer;
+  color: var(--muted);
+}
+.seg button.on {
+  background: var(--seg-thumb);
+  color: var(--ink);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+.sec {
+  padding: 26px 0 0;
+}
+.sec .sec-head {
+  margin-bottom: 12px;
+}
+.sec .sec-title {
+  margin-bottom: 12px;
+}
+.trust {
+  display: grid;
+  gap: 12px;
+}
+@media (min-width: 768px) {
+  .trust {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.trust .card b {
+  display: block;
+  margin-bottom: 2px;
+}

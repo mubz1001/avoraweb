@@ -1,0 +1,880 @@
+[
+  {
+    "id": "jazeera",
+    "type": "hotel",
+    "name": "Jazeera Palace Hotel",
+    "city": "Mogadishu",
+    "area": "Hamar Weyne",
+    "address": "Maka Al-Mukarama Rd, Hamar Weyne, Mogadishu",
+    "propertyType": "Hotel",
+    "stars": 4,
+    "amenities": ["wifi", "ac", "bf", "power", "rest", "shuttle", "sec", "lift", "prayer"],
+    "hue": 28,
+    "featured": true,
+    "listedDaysAgo": 400,
+    "mapUrl": "https://www.google.com/maps/place/Hamar+Weyne,+Mogadishu,+Somalia",
+    "description": "A seafront classic in Hamar Weyne with sea-facing rooms, a rooftop restaurant and reliable backup power. Ten minutes from Aden Adde airport and walking distance to Lido Beach. Staff speak Somali, Arabic and English.",
+    "checkInFrom": "14:00",
+    "checkOutUntil": "12:00",
+    "cancellation": {
+      "freeUntilDaysBefore": 1
+    },
+    "whatsapp": "252615550101",
+    "roomTypes": [
+      {
+        "id": "single",
+        "name": "Single Room",
+        "beds": "1 single bed",
+        "maxGuests": 1,
+        "sizeM2": 14,
+        "features": ["Private bathroom", "Fan"],
+        "nightlyPrice": {
+          "amount": 8000,
+          "currency": "USD"
+        }
+      },
+      {
+        "id": "double",
+        "name": "Double Room",
+        "beds": "1 double bed",
+        "maxGuests": 2,
+        "sizeM2": 22,
+        "features": ["Air conditioning", "Private bathroom", "TV"],
+        "nightlyPrice": {
+          "amount": 10000,
+          "currency": "USD"
+        }
+      },
+      {
+        "id": "suite",
+        "name": "Family Suite",
+        "beds": "1 double + 2 single beds",
+        "maxGuests": 4,
+        "sizeM2": 38,
+        "features": ["Air conditioning", "Living area", "Mini fridge"],
+        "nightlyPrice": {
+          "amount": 18000,
+          "currency": "USD"
+        }
+      }
+    ],
+    "mock": {
+      "stock": {
+        "single": 3,
+        "double": 6,
+        "suite": 2
+      },
+      "blocked": false,
+      "reviewCount": 212,
+      "targetRating": 4.6
+    }
+  },
+  {
+    "id": "lido",
+    "type": "hotel",
+    "name": "Lido Beach Suites",
+    "city": "Mogadishu",
+    "area": "Lido Beach",
+    "address": "Lido Beach Rd, Mogadishu",
+    "propertyType": "Apartments",
+    "stars": 4,
+    "amenities": ["wifi", "ac", "beach", "power", "park", "sec", "family"],
+    "hue": 200,
+    "featured": true,
+    "listedDaysAgo": 250,
+    "description": "Self-contained suites steps from Lido Beach, each with a small kitchen and sea-view balcony. Good for families and longer stays, with a shared lounge and on-site security.",
+    "checkInFrom": "15:00",
+    "checkOutUntil": "11:00",
+    "cancellation": {
+      "freeUntilDaysBefore": 1
+    },
+    "whatsapp": "252615550102",
+    "roomTypes": [
+      {
+        "id": "double",
+        "name": "Double Suite",
+        "beds": "1 double bed",
+        "maxGuests": 2,
+        "sizeM2": 30,
+        "features": ["Kitchenette", "Sea view"],
+        "nightlyPrice": {
+          "amount": 13500,
+          "currency": "USD"
+        }
+      },
+      {
+        "id": "suite",
+        "name": "Family Suite",
+        "beds": "2 double beds",
+        "maxGuests": 4,
+        "sizeM2": 48,
+        "features": ["Kitchenette", "Sea view", "Living area"],
+        "nightlyPrice": {
+          "amount": 21000,
+          "currency": "USD"
+        }
+      }
+    ],
+    "mock": {
+      "stock": {
+        "double": 4,
+        "suite": 2
+      },
+      "blocked": false,
+      "reviewCount": 87,
+      "targetRating": 4.4
+    }
+  },
+  {
+    "id": "shamo",
+    "type": "hotel",
+    "name": "Shamo Residence",
+    "city": "Mogadishu",
+    "area": "Shibis",
+    "address": "Shibis District, Mogadishu",
+    "propertyType": "Guesthouse",
+    "stars": 3,
+    "amenities": ["wifi", "ac", "bf", "power", "sec"],
+    "hue": 150,
+    "featured": false,
+    "listedDaysAgo": 4,
+    "description": "A quiet, newly opened guesthouse with home-style breakfast and a shaded courtyard. Friendly and affordable for business travellers.",
+    "checkInFrom": "13:00",
+    "checkOutUntil": "11:00",
+    "cancellation": {
+      "freeUntilDaysBefore": 1
+    },
+    "whatsapp": "252615550103",
+    "roomTypes": [
+      {
+        "id": "single",
+        "name": "Single Room",
+        "beds": "1 single bed",
+        "maxGuests": 1,
+        "sizeM2": 14,
+        "features": ["Private bathroom", "Fan"],
+        "nightlyPrice": {
+          "amount": 4000,
+          "currency": "USD"
+        }
+      },
+      {
+        "id": "double",
+        "name": "Double Room",
+        "beds": "1 double bed",
+        "maxGuests": 2,
+        "sizeM2": 22,
+        "features": ["Air conditioning", "Private bathroom", "TV"],
+        "nightlyPrice": {
+          "amount": 6000,
+          "currency": "USD"
+        }
+      }
+    ],
+    "mock": {
+      "stock": {
+        "single": 2,
+        "double": 5
+      },
+      "blocked": false,
+      "reviewCount": 0,
+      "targetRating": null
+    }
+  },
+  {
+    "id": "ocean",
+    "type": "hotel",
+    "name": "Ocean View Inn",
+    "city": "Mogadishu",
+    "area": "Warta Nabadda",
+    "address": "Warta Nabadda, Mogadishu",
+    "propertyType": "Hotel",
+    "stars": 3,
+    "amenities": ["wifi", "ac", "rest", "power", "park"],
+    "hue": 215,
+    "featured": false,
+    "listedDaysAgo": 300,
+    "description": "Comfortable mid-range hotel with sea views from the upper floors and a popular terrace restaurant.",
+    "checkInFrom": "14:00",
+    "checkOutUntil": "12:00",
+    "cancellation": {
+      "freeUntilDaysBefore": 1
+    },
+    "whatsapp": "252615550104",
+    "roomTypes": [
+      {
+        "id": "single",
+        "name": "Single Room",
+        "beds": "1 single bed",
+        "maxGuests": 1,
+        "sizeM2": 14,
+        "features": ["Private bathroom", "Fan"],
+        "nightlyPrice": {
+          "amount": 6000,
+          "currency": "USD"
+        }
+      },
+      {
+        "id": "double",
+        "name": "Double Room",
+        "beds": "1 double bed",
+        "maxGuests": 2,
+        "sizeM2": 22,
+        "features": ["Air conditioning", "Private bathroom", "TV"],
+        "nightlyPrice": {
+          "amount": 8000,
+          "currency": "USD"
+        }
+      }
+    ],
+    "mock": {
+      "stock": {
+        "single": 2,
+        "double": 4
+      },
+      "blocked": true,
+      "reviewCount": 46,
+      "targetRating": 4.1
+    }
+  },
+  {
+    "id": "ambassador",
+    "type": "hotel",
+    "name": "Ambassador Plaza Hargeisa",
+    "city": "Hargeisa",
+    "area": "Downtown",
+    "address": "Independence Ave, Downtown, Hargeisa",
+    "propertyType": "Hotel",
+    "stars": 4,
+    "amenities": ["wifi", "ac", "bf", "rest", "shuttle", "lift", "power", "park", "prayer"],
+    "hue": 340,
+    "featured": true,
+    "listedDaysAgo": 500,
+    "description": "Hargeisa's business address: central, quiet at night and next to the main market. Conference room, restaurant, and a free airport pickup on request.",
+    "checkInFrom": "14:00",
+    "checkOutUntil": "12:00",
+    "cancellation": {
+      "freeUntilDaysBefore": 1
+    },
+    "whatsapp": "252634550105",
+    "roomTypes": [
+      {
+        "id": "single",
+        "name": "Single Room",
+        "beds": "1 single bed",
+        "maxGuests": 1,
+        "sizeM2": 14,
+        "features": ["Private bathroom", "Fan"],
+        "nightlyPrice": {
+          "amount": 7000,
+          "currency": "USD"
+        }
+      },
+      {
+        "id": "double",
+        "name": "Double Room",
+        "beds": "1 double bed",
+        "maxGuests": 2,
+        "sizeM2": 22,
+        "features": ["Air conditioning", "Private bathroom", "TV"],
+        "nightlyPrice": {
+          "amount": 9000,
+          "currency": "USD"
+        }
+      },
+      {
+        "id": "suite",
+        "name": "Family Suite",
+        "beds": "1 double + 2 single beds",
+        "maxGuests": 4,
+        "sizeM2": 38,
+        "features": ["Air conditioning", "Living area", "Mini fridge"],
+        "nightlyPrice": {
+          "amount": 16200,
+          "currency": "USD"
+        }
+      }
+    ],
+    "mock": {
+      "stock": {
+        "single": 2,
+        "double": 8,
+        "suite": 3
+      },
+      "blocked": false,
+      "reviewCount": 164,
+      "targetRating": 4.7
+    }
+  },
+  {
+    "id": "damal",
+    "type": "hotel",
+    "name": "Damal Lodge",
+    "city": "Hargeisa",
+    "area": "Ahmed Dhagah",
+    "address": "Ahmed Dhagah, Hargeisa",
+    "propertyType": "Guesthouse",
+    "stars": 3,
+    "amenities": ["wifi", "bf", "park", "power", "sec"],
+    "hue": 95,
+    "featured": false,
+    "listedDaysAgo": 3,
+    "description": "A small lodge with a garden and a cooler mountain-side breeze. Just opened; breakfast is made fresh every morning.",
+    "checkInFrom": "14:00",
+    "checkOutUntil": "11:00",
+    "cancellation": {
+      "freeUntilDaysBefore": 1
+    },
+    "whatsapp": "252634550106",
+    "roomTypes": [
+      {
+        "id": "single",
+        "name": "Single Room",
+        "beds": "1 single bed",
+        "maxGuests": 1,
+        "sizeM2": 14,
+        "features": ["Private bathroom", "Fan"],
+        "nightlyPrice": {
+          "amount": 3500,
+          "currency": "USD"
+        }
+      },
+      {
+        "id": "double",
+        "name": "Double Room",
+        "beds": "1 double bed",
+        "maxGuests": 2,
+        "sizeM2": 22,
+        "features": ["Air conditioning", "Private bathroom", "TV"],
+        "nightlyPrice": {
+          "amount": 5500,
+          "currency": "USD"
+        }
+      }
+    ],
+    "mock": {
+      "stock": {
+        "single": 1,
+        "double": 4
+      },
+      "blocked": false,
+      "reviewCount": 1,
+      "targetRating": null
+    }
+  },
+  {
+    "id": "mansoor",
+    "type": "hotel",
+    "name": "Mansoor Guesthouse",
+    "city": "Hargeisa",
+    "area": "Jigjiga Yar",
+    "address": "Jigjiga Yar, Hargeisa",
+    "propertyType": "Guesthouse",
+    "stars": 2,
+    "amenities": ["wifi", "power", "sec"],
+    "hue": 45,
+    "featured": false,
+    "listedDaysAgo": 380,
+    "description": "No-frills, clean and central. Popular with travellers who just need a safe bed and good Wi-Fi.",
+    "checkInFrom": "12:00",
+    "checkOutUntil": "11:00",
+    "cancellation": {
+      "freeUntilDaysBefore": 1
+    },
+    "whatsapp": "252634550107",
+    "roomTypes": [
+      {
+        "id": "single",
+        "name": "Single Room",
+        "beds": "1 single bed",
+        "maxGuests": 1,
+        "sizeM2": 14,
+        "features": ["Private bathroom", "Fan"],
+        "nightlyPrice": {
+          "amount": 2000,
+          "currency": "USD"
+        }
+      },
+      {
+        "id": "double",
+        "name": "Double Room",
+        "beds": "1 double bed",
+        "maxGuests": 2,
+        "sizeM2": 22,
+        "features": ["Air conditioning", "Private bathroom", "TV"],
+        "nightlyPrice": {
+          "amount": 4000,
+          "currency": "USD"
+        }
+      }
+    ],
+    "mock": {
+      "stock": {
+        "single": 4,
+        "double": 5
+      },
+      "blocked": false,
+      "reviewCount": 31,
+      "targetRating": 3.9
+    }
+  },
+  {
+    "id": "nugaal",
+    "type": "hotel",
+    "name": "Nugaal Hotel",
+    "city": "Garowe",
+    "area": "Garowe Centre",
+    "address": "Main Road, Garowe Centre, Garowe",
+    "propertyType": "Hotel",
+    "stars": 3,
+    "amenities": ["wifi", "ac", "bf", "rest", "park", "power", "prayer"],
+    "hue": 10,
+    "featured": true,
+    "listedDaysAgo": 450,
+    "description": "The most established hotel in Garowe, right on the main road with a busy restaurant and rooms around a quiet courtyard.",
+    "checkInFrom": "14:00",
+    "checkOutUntil": "12:00",
+    "cancellation": {
+      "freeUntilDaysBefore": 1
+    },
+    "whatsapp": "252907550108",
+    "roomTypes": [
+      {
+        "id": "single",
+        "name": "Single Room",
+        "beds": "1 single bed",
+        "maxGuests": 1,
+        "sizeM2": 14,
+        "features": ["Private bathroom", "Fan"],
+        "nightlyPrice": {
+          "amount": 5000,
+          "currency": "USD"
+        }
+      },
+      {
+        "id": "double",
+        "name": "Double Room",
+        "beds": "1 double bed",
+        "maxGuests": 2,
+        "sizeM2": 22,
+        "features": ["Air conditioning", "Private bathroom", "TV"],
+        "nightlyPrice": {
+          "amount": 7000,
+          "currency": "USD"
+        }
+      },
+      {
+        "id": "suite",
+        "name": "Family Suite",
+        "beds": "1 double + 2 single beds",
+        "maxGuests": 4,
+        "sizeM2": 38,
+        "features": ["Air conditioning", "Living area", "Mini fridge"],
+        "nightlyPrice": {
+          "amount": 12600,
+          "currency": "USD"
+        }
+      }
+    ],
+    "mock": {
+      "stock": {
+        "single": 3,
+        "double": 6,
+        "suite": 2
+      },
+      "blocked": false,
+      "reviewCount": 58,
+      "targetRating": 4.3
+    }
+  },
+  {
+    "id": "puntgarden",
+    "type": "hotel",
+    "name": "Puntland Garden Inn",
+    "city": "Garowe",
+    "area": "Horseed",
+    "address": "Horseed District, Garowe",
+    "propertyType": "Hotel",
+    "stars": 3,
+    "amenities": ["wifi", "ac", "bf", "rest", "park", "power", "sec"],
+    "hue": 120,
+    "featured": false,
+    "listedDaysAgo": 5,
+    "description": "New garden inn with spacious rooms, a restaurant serving local and continental food, and secure parking.",
+    "checkInFrom": "14:00",
+    "checkOutUntil": "12:00",
+    "cancellation": {
+      "freeUntilDaysBefore": 1
+    },
+    "whatsapp": "252907550109",
+    "roomTypes": [
+      {
+        "id": "single",
+        "name": "Single Room",
+        "beds": "1 single bed",
+        "maxGuests": 1,
+        "sizeM2": 14,
+        "features": ["Private bathroom", "Fan"],
+        "nightlyPrice": {
+          "amount": 4500,
+          "currency": "USD"
+        }
+      },
+      {
+        "id": "double",
+        "name": "Double Room",
+        "beds": "1 double bed",
+        "maxGuests": 2,
+        "sizeM2": 22,
+        "features": ["Air conditioning", "Private bathroom", "TV"],
+        "nightlyPrice": {
+          "amount": 6500,
+          "currency": "USD"
+        }
+      },
+      {
+        "id": "suite",
+        "name": "Family Suite",
+        "beds": "1 double + 2 single beds",
+        "maxGuests": 4,
+        "sizeM2": 38,
+        "features": ["Air conditioning", "Living area", "Mini fridge"],
+        "nightlyPrice": {
+          "amount": 11700,
+          "currency": "USD"
+        }
+      }
+    ],
+    "mock": {
+      "stock": {
+        "single": 2,
+        "double": 7,
+        "suite": 2
+      },
+      "blocked": false,
+      "reviewCount": 2,
+      "targetRating": null
+    }
+  },
+  {
+    "id": "karkaar",
+    "type": "hotel",
+    "name": "Karkaar Suites",
+    "city": "Garowe",
+    "area": "Garowe Centre",
+    "address": "Near the Governor's Office, Garowe",
+    "propertyType": "Apartments",
+    "stars": 4,
+    "amenities": ["wifi", "ac", "power", "park", "sec", "lift", "family"],
+    "hue": 265,
+    "featured": false,
+    "listedDaysAgo": 200,
+    "description": "Modern serviced apartments with a kitchenette, ideal for stays of a week or more. Weekly cleaning and 24-hour reception.",
+    "checkInFrom": "14:00",
+    "checkOutUntil": "11:00",
+    "cancellation": {
+      "freeUntilDaysBefore": 2
+    },
+    "whatsapp": "252907550110",
+    "roomTypes": [
+      {
+        "id": "double",
+        "name": "One-Bedroom Apartment",
+        "beds": "1 double bed",
+        "maxGuests": 2,
+        "sizeM2": 40,
+        "features": ["Kitchenette", "Living area"],
+        "nightlyPrice": {
+          "amount": 9500,
+          "currency": "USD"
+        }
+      },
+      {
+        "id": "suite",
+        "name": "Two-Bedroom Apartment",
+        "beds": "2 double beds",
+        "maxGuests": 4,
+        "sizeM2": 62,
+        "features": ["Kitchenette", "Living area"],
+        "nightlyPrice": {
+          "amount": 15000,
+          "currency": "USD"
+        }
+      }
+    ],
+    "mock": {
+      "stock": {
+        "double": 5,
+        "suite": 3
+      },
+      "blocked": false,
+      "reviewCount": 39,
+      "targetRating": 4.5
+    }
+  },
+  {
+    "id": "alnuur",
+    "type": "hall",
+    "name": "Al-Nuur Wedding Hall",
+    "city": "Mogadishu",
+    "area": "Hodan",
+    "address": "Hodan District, Mogadishu",
+    "propertyType": "Wedding hall",
+    "amenities": ["stage", "cater", "park", "ac", "power", "bride", "sec", "decor"],
+    "hue": 320,
+    "featured": true,
+    "listedDaysAgo": 420,
+    "description": "Mogadishu's favourite wedding venue with a grand stage, bridal suite and in-house catering for up to 500 guests.",
+    "checkInFrom": "10:00",
+    "checkOutUntil": "23:30",
+    "cancellation": {
+      "freeUntilDaysBefore": 7
+    },
+    "whatsapp": "252615550111",
+    "roomTypes": [
+      {
+        "id": "main",
+        "name": "Main Hall",
+        "beds": "Seated banquet · up to 500 guests",
+        "maxGuests": 500,
+        "features": ["Stage", "Sound system", "AC"],
+        "nightlyPrice": {
+          "amount": 150000,
+          "currency": "USD"
+        }
+      },
+      {
+        "id": "garden",
+        "name": "Garden Hall",
+        "beds": "Open-air · up to 250 guests",
+        "maxGuests": 250,
+        "features": ["Lighting", "Shaded seating"],
+        "nightlyPrice": {
+          "amount": 90000,
+          "currency": "USD"
+        }
+      }
+    ],
+    "mock": {
+      "stock": {
+        "main": 1,
+        "garden": 1
+      },
+      "blocked": false,
+      "reviewCount": 96,
+      "targetRating": 4.7
+    }
+  },
+  {
+    "id": "banadirgarden",
+    "type": "hall",
+    "name": "Banadir Garden Events",
+    "city": "Mogadishu",
+    "area": "Wadajir",
+    "address": "Wadajir, Mogadishu",
+    "propertyType": "Wedding hall",
+    "amenities": ["stage", "park", "power", "sec", "decor"],
+    "hue": 140,
+    "featured": false,
+    "listedDaysAgo": 6,
+    "description": "New open-air garden venue with fairy lights and a covered stage. Best for evening weddings.",
+    "checkInFrom": "16:00",
+    "checkOutUntil": "23:30",
+    "cancellation": {
+      "freeUntilDaysBefore": 7
+    },
+    "whatsapp": "252615550112",
+    "roomTypes": [
+      {
+        "id": "main",
+        "name": "Main Hall",
+        "beds": "Seated banquet · up to 500 guests",
+        "maxGuests": 500,
+        "features": ["Stage", "Sound system", "AC"],
+        "nightlyPrice": {
+          "amount": 120000,
+          "currency": "USD"
+        }
+      },
+      {
+        "id": "garden",
+        "name": "Garden Hall",
+        "beds": "Open-air · up to 250 guests",
+        "maxGuests": 250,
+        "features": ["Lighting", "Shaded seating"],
+        "nightlyPrice": {
+          "amount": 80000,
+          "currency": "USD"
+        }
+      }
+    ],
+    "mock": {
+      "stock": {
+        "main": 1,
+        "garden": 1
+      },
+      "blocked": false,
+      "reviewCount": 0,
+      "targetRating": null
+    }
+  },
+  {
+    "id": "qaran",
+    "type": "hall",
+    "name": "Qaran Wedding Palace",
+    "city": "Hargeisa",
+    "area": "Downtown",
+    "address": "Independence Ave, Hargeisa",
+    "propertyType": "Wedding hall",
+    "amenities": ["stage", "cater", "park", "ac", "power", "bride", "decor"],
+    "hue": 285,
+    "featured": true,
+    "listedDaysAgo": 380,
+    "description": "A palace-style hall in the centre of Hargeisa with a large dance floor and a dedicated catering kitchen.",
+    "checkInFrom": "10:00",
+    "checkOutUntil": "23:30",
+    "cancellation": {
+      "freeUntilDaysBefore": 7
+    },
+    "whatsapp": "252634550113",
+    "roomTypes": [
+      {
+        "id": "main",
+        "name": "Main Hall",
+        "beds": "Seated banquet · up to 500 guests",
+        "maxGuests": 500,
+        "features": ["Stage", "Sound system", "AC"],
+        "nightlyPrice": {
+          "amount": 130000,
+          "currency": "USD"
+        }
+      },
+      {
+        "id": "garden",
+        "name": "Garden Hall",
+        "beds": "Open-air · up to 250 guests",
+        "maxGuests": 250,
+        "features": ["Lighting", "Shaded seating"],
+        "nightlyPrice": {
+          "amount": 85000,
+          "currency": "USD"
+        }
+      }
+    ],
+    "mock": {
+      "stock": {
+        "main": 1,
+        "garden": 1
+      },
+      "blocked": false,
+      "reviewCount": 61,
+      "targetRating": 4.5
+    }
+  },
+  {
+    "id": "hodanevents",
+    "type": "hall",
+    "name": "Hodan Event Centre",
+    "city": "Hargeisa",
+    "area": "Ibraahim Koodbuur",
+    "address": "Ibraahim Koodbuur, Hargeisa",
+    "propertyType": "Wedding hall",
+    "amenities": ["stage", "ac", "park", "power", "sec"],
+    "hue": 60,
+    "featured": false,
+    "listedDaysAgo": 8,
+    "description": "Newly renovated multi-purpose event centre for weddings, engagement parties and conferences.",
+    "checkInFrom": "10:00",
+    "checkOutUntil": "23:00",
+    "cancellation": {
+      "freeUntilDaysBefore": 7
+    },
+    "whatsapp": "252634550114",
+    "roomTypes": [
+      {
+        "id": "main",
+        "name": "Main Hall",
+        "beds": "Seated banquet · up to 500 guests",
+        "maxGuests": 500,
+        "features": ["Stage", "Sound system", "AC"],
+        "nightlyPrice": {
+          "amount": 100000,
+          "currency": "USD"
+        }
+      },
+      {
+        "id": "garden",
+        "name": "Garden Hall",
+        "beds": "Open-air · up to 250 guests",
+        "maxGuests": 250,
+        "features": ["Lighting", "Shaded seating"],
+        "nightlyPrice": {
+          "amount": 70000,
+          "currency": "USD"
+        }
+      }
+    ],
+    "mock": {
+      "stock": {
+        "main": 1,
+        "garden": 1
+      },
+      "blocked": false,
+      "reviewCount": 0,
+      "targetRating": null
+    }
+  },
+  {
+    "id": "nugaalgrand",
+    "type": "hall",
+    "name": "Nugaal Grand Hall",
+    "city": "Garowe",
+    "area": "Garowe Centre",
+    "address": "Garowe Centre, Garowe",
+    "propertyType": "Wedding hall",
+    "amenities": ["stage", "cater", "park", "ac", "power", "bride", "decor"],
+    "hue": 15,
+    "featured": false,
+    "listedDaysAgo": 290,
+    "description": "The largest wedding hall in Garowe with ample parking, a bridal suite and in-house decorators.",
+    "checkInFrom": "10:00",
+    "checkOutUntil": "23:30",
+    "cancellation": {
+      "freeUntilDaysBefore": 7
+    },
+    "whatsapp": "252907550115",
+    "roomTypes": [
+      {
+        "id": "main",
+        "name": "Main Hall",
+        "beds": "Seated banquet · up to 500 guests",
+        "maxGuests": 500,
+        "features": ["Stage", "Sound system", "AC"],
+        "nightlyPrice": {
+          "amount": 110000,
+          "currency": "USD"
+        }
+      },
+      {
+        "id": "garden",
+        "name": "Garden Hall",
+        "beds": "Open-air · up to 250 guests",
+        "maxGuests": 250,
+        "features": ["Lighting", "Shaded seating"],
+        "nightlyPrice": {
+          "amount": 75000,
+          "currency": "USD"
+        }
+      }
+    ],
+    "mock": {
+      "stock": {
+        "main": 1,
+        "garden": 1
+      },
+      "blocked": false,
+      "reviewCount": 22,
+      "targetRating": 4.3
+    }
+  }
+]

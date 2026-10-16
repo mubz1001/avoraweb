@@ -1,0 +1,21 @@
+/* 404 page: fills the screen below the header, message centred. */
+.nf {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 10px;
+  min-height: calc(100dvh - 56px);
+  padding-top: 32px;
+  padding-bottom: 32px;
+  text-align: center;
+}
+.nf-title {
+  font-size: 28px;
+}
+.nf-body {
+  margin: 0;
+  max-width: 420px;
+}
+.nf-actions {
+  margin-top: 14px;
+}

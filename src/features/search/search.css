@@ -1,0 +1,498 @@
+/* Search form (home card, inline edit accordions) */
+.sform {
+  display: grid;
+  gap: 0 12px;
+}
+.sform > * {
+  min-width: 0;
+}
+@media (max-width: 767px) {
+  .sform .field {
+    margin-bottom: 12px;
+  }
+}
+@media (min-width: 768px) {
+  .sform {
+    grid-template-columns: 1.5fr 1.7fr 1.1fr auto;
+    align-items: end;
+  }
+  .sform .field {
+    margin-bottom: 0;
+  }
+  .sform .btn {
+    min-height: 46px;
+  }
+}
+/* every field matches the date field (15px / 550) */
+.sform .inp,
+.sform .pick,
+.sform .dr-txt,
+.sform .tr-txt,
+.sform input.inp::placeholder {
+  font-size: 15px;
+  font-weight: 550;
+}
+.sform input.inp::placeholder {
+  font-weight: 400;
+  color: var(--muted);
+}
+@media (max-width: 767px) {
+  .sform .inp,
+  .sform .pick,
+  .sform .dr-txt,
+  .sform .tr-txt,
+  .sform input.inp::placeholder {
+    font-size: 16px; /* no iOS focus zoom (forms.css) */
+  }
+}
+/* in an inline edit panel: one column on phones, roomy columns from 768px, the button on its own row */
+.acc .sform {
+  grid-template-columns: 1fr;
+}
+.acc .sform .field {
+  margin-bottom: 12px;
+}
+.acc .sform .btn {
+  margin-top: 10px;
+}
+@media (min-width: 768px) {
+  .acc .sform {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 0 16px;
+  }
+  .acc .sform .btn {
+    grid-column: 1 / -1;
+    justify-self: end;
+    min-width: 160px;
+    margin-top: 14px;
+  }
+}
+
+.fwrap {
+  position: relative;
+}
+.fwrap > svg {
+  position: absolute;
+  inset-inline-start: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: var(--muted);
+  pointer-events: none;
+}
+.inp.ic {
+  padding-inline-start: 42px;
+}
+.combo .inp.ic {
+  padding-inline-end: 44px;
+}
+/* ✕ that clears the location field */
+.fclear {
+  position: absolute;
+  inset-inline-end: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+.fclear:hover {
+  background: var(--surface-hover);
+  color: var(--ink);
+}
+.fclear:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
+}
+.fclear svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* city combobox */
+.combo {
+  position: relative;
+}
+.sugg {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 4px);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--shadow-overlay);
+  z-index: 30;
+  max-height: 300px;
+  overflow: auto;
+  padding: 6px;
+  list-style: none;
+  margin: 0;
+}
+.sugg li {
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+.sugg li small {
+  color: var(--muted);
+}
+.sugg li[aria-selected='true'],
+.sugg li:hover {
+  background: var(--surface-hover);
+}
+.sugg .gh {
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  cursor: default;
+  padding: 8px 12px 2px;
+}
+.sugg .gh:hover {
+  background: none;
+}
+
+/* picker fields */
+.dr,
+.tr {
+  position: relative;
+}
+.pick {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  text-align: start;
+  cursor: pointer;
+  background: var(--card);
+}
+.pick .fic svg {
+  width: 18px;
+  height: 18px;
+  color: var(--muted);
+}
+.pick[aria-expanded='true'] {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px var(--field-ring);
+}
+.dr-txt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  font-weight: 550;
+}
+.dr-arrow {
+  font-style: normal;
+  color: var(--muted);
+}
+[dir='rtl'] .dr-arrow {
+  display: inline-block;
+  transform: scaleX(-1);
+}
+
+/* calendar */
+.cal {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 60;
+  background: var(--calendar-bg);
+  border-radius: 16px;
+  box-shadow: var(--shadow-pop);
+  padding: 18px 18px 14px;
+  width: max-content;
+  color: var(--calendar-day-text);
+}
+.cal-top {
+  display: none;
+}
+.cal-months {
+  display: flex;
+  gap: 30px;
+  position: relative;
+}
+.cal-m {
+  width: 290px;
+}
+.cal-mh {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: 36px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.cal-nav {
+  position: absolute;
+  top: 0;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--calendar-bg);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  padding: 0;
+}
+.cal-nav svg {
+  width: 18px;
+  height: 18px;
+}
+.cal-nav.prev {
+  inset-inline-start: 0;
+}
+.cal-nav.next {
+  inset-inline-end: 0;
+}
+.cal-nav.prev svg {
+  transform: rotate(90deg);
+}
+.cal-nav.next svg {
+  transform: rotate(-90deg);
+}
+[dir='rtl'] .cal-nav.prev svg {
+  transform: rotate(-90deg);
+}
+[dir='rtl'] .cal-nav.next svg {
+  transform: rotate(90deg);
+}
+.cal-nav:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.cal-nav:not(:disabled):hover {
+  background: var(--surface-hover);
+}
+.cal-wd,
+.cal-g {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+.cal-wd span {
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+  padding: 4px 0 6px;
+}
+.cd {
+  height: 42px;
+  border: 0;
+  background: none;
+  font-size: 14px;
+  cursor: pointer;
+  position: relative;
+  padding: 0;
+}
+.cd:disabled {
+  color: var(--calendar-disabled-text);
+  cursor: default;
+}
+.cd.today {
+  font-weight: 800;
+}
+.cd.in {
+  background: var(--calendar-range-bg);
+}
+.cd:not(:disabled):not(.s):not(.e):hover {
+  box-shadow: inset 0 0 0 2px var(--calendar-day-text);
+  border-radius: 50%;
+}
+.cd.s,
+.cd.e {
+  background: var(--calendar-selected-bg);
+  color: var(--calendar-selected-text);
+  font-weight: 700;
+}
+.cd.s {
+  border-radius: 21px 0 0 21px;
+}
+.cd.e {
+  border-radius: 0 21px 21px 0;
+}
+.cd.solo,
+.cd.s.solo {
+  border-radius: 21px;
+}
+.cal-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+/* The selected range, said plainly: black and bold, and on its own line on phones. */
+.cal-sum {
+  flex: 1 1 100%;
+  font-size: 16px;
+  font-weight: 750;
+  color: var(--ink);
+}
+.cal-actions {
+  display: flex;
+  gap: 8px;
+  flex: 1 1 100%;
+}
+.cal-actions .btn {
+  flex: 1;
+}
+@media (min-width: 768px) {
+  .cal-sum {
+    flex: 1 1 auto;
+  }
+  .cal-actions {
+    flex: none;
+  }
+  .cal-actions .btn {
+    flex: none;
+    min-width: 84px;
+  }
+}
+.cal-bk {
+  position: fixed;
+  inset: 0;
+  background: var(--backdrop);
+  z-index: 95;
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-standard);
+}
+.cal-bk.show {
+  opacity: 1;
+}
+
+/* guests & rooms popover */
+.trp {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 300px;
+  max-width: calc(100vw - 32px);
+  z-index: 60;
+  background: var(--card);
+  border-radius: 16px;
+  box-shadow: var(--shadow-pop);
+  padding: 8px 18px 16px;
+}
+.trrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+.trrow:last-child {
+  border-bottom: 0;
+}
+.trp .stepper button {
+  width: 40px;
+  height: 40px;
+}
+.trp .trp-done {
+  margin-top: 6px;
+}
+/* Opened from a trigger at the bottom of the screen (the property sticky bar): rises above it. Phones use the sheet. */
+.cal.up,
+.trp.up {
+  top: auto;
+  bottom: calc(100% + 8px);
+  transform: translateY(4px);
+}
+.cal.up.show,
+.trp.up.show {
+  transform: none;
+}
+/* popovers: fade + 4px drop */
+.cal,
+.trp {
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    opacity var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+.cal.show,
+.trp.show {
+  opacity: 1;
+  transform: none;
+}
+
+/* phones: both become bottom sheets that slide up (ease-out) and down (ease-in) */
+@media (max-width: 767px) {
+  .trp {
+    right: 0;
+    min-width: 0;
+  }
+  .cal.mob,
+  .trp.mob {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    z-index: 100;
+    border-radius: 20px 20px 0 0;
+    opacity: 1;
+    transform: translateY(100%);
+    transition: transform var(--dur-base) var(--ease-in);
+    will-change: transform;
+  }
+  .cal.mob.show,
+  .trp.mob.show {
+    transform: none;
+    transition: transform var(--dur-slow) var(--ease-out);
+  }
+  .cal.mob {
+    width: auto;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    padding: 12px 16px calc(14px + env(safe-area-inset-bottom));
+  }
+  .trp.mob {
+    min-width: 0;
+    max-width: none;
+    padding: 12px 16px calc(16px + env(safe-area-inset-bottom));
+  }
+  .cal.mob .cal-top,
+  .trp.mob .cal-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
+  }
+  .cal.mob .cal-months {
+    flex-direction: column;
+    gap: 22px;
+    overflow: auto;
+    flex: 1;
+    min-height: 260px;
+    max-height: 62vh;
+    overscroll-behavior: contain;
+  }
+  .cal.mob .cal-m {
+    width: auto;
+  }
+  .trp.mob .stepper button {
+    width: 44px;
+    height: 44px;
+  }
+}

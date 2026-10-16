@@ -1,0 +1,50 @@
+/* Global motion rules (docs/07). Component transitions live next to their component. */
+
+/* iOS spring, mobile only (< 768px): a critically damped spring (duration 0.3 s, bounce 0) sampled into
+   linear(); engines without linear() keep the cubic-bezier fallback. The duration is the settle time (residual < 0.1%). */
+@media (max-width: 767px) {
+  :root {
+    --ios-spring: cubic-bezier(0.2, 0.8, 0.2, 1);
+    --ios-spring-dur: 440ms;
+  }
+}
+@supports (transition-timing-function: linear(0, 1)) {
+  @media (max-width: 767px) {
+    :root {
+      --ios-spring: linear(
+        0,
+        0.004 1%,
+        0.0188 2.25%,
+        0.0422 3.5%,
+        0.0788 5%,
+        0.1611 7.75%,
+        0.3622 13.75%,
+        0.465 17%,
+        0.5574 20.25%,
+        0.6378 23.5%,
+        0.7063 26.75%,
+        0.7676 30.25%,
+        0.8174 33.75%,
+        0.86 37.5%,
+        0.899 42%,
+        0.929 46.75%,
+        0.9532 52.25%,
+        0.9711 58.5%,
+        0.9833 65.5%,
+        0.9914 73.75%,
+        1
+      );
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
